@@ -1,12 +1,9 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" version="29.6.0">
   <diagram name="Page-1" id="lXnvRB3iVPEVxcfJpv5T">
-    <mxGraphModel dx="1426" dy="778" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="807" dy="415" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="Dnfnssyv5SIGvBlbTwxf-40" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" value="" vertex="1">
-          <mxGeometry height="490" width="800" x="20" y="130" as="geometry" />
-        </mxCell>
         <mxCell id="Dnfnssyv5SIGvBlbTwxf-5" edge="1" parent="1" source="sma8xi57MWmZYKXKINMx-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;curved=1;" target="sma8xi57MWmZYKXKINMx-34">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
@@ -16,7 +13,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="sma8xi57MWmZYKXKINMx-1" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="User" vertex="1">
-          <mxGeometry height="60" width="30" x="30" y="402.5" as="geometry" />
+          <mxGeometry height="60" width="30" x="90" y="427.5" as="geometry" />
         </mxCell>
         <mxCell id="Dnfnssyv5SIGvBlbTwxf-4" edge="1" parent="1" source="sma8xi57MWmZYKXKINMx-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;curved=1;" target="sma8xi57MWmZYKXKINMx-33">
           <mxGeometry relative="1" as="geometry">
@@ -26,8 +23,16 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="sma8xi57MWmZYKXKINMx-2" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Event Runner" vertex="1">
-          <mxGeometry height="60" width="30" x="70" y="295" as="geometry" />
+        <mxCell id="adSGKhgQNrClxNS1ldta-5" edge="1" parent="1" source="sma8xi57MWmZYKXKINMx-2" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;startSize=8;endSize=8;endArrow=none;endFill=0;exitX=1;exitY=0.417;exitDx=0;exitDy=0;exitPerimeter=0;" target="sma8xi57MWmZYKXKINMx-35">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="410" />
+            </Array>
+            <mxPoint x="100" y="330" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sma8xi57MWmZYKXKINMx-2" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Organizer" vertex="1">
+          <mxGeometry height="60" width="30" x="100" y="330" as="geometry" />
         </mxCell>
         <mxCell id="sma8xi57MWmZYKXKINMx-30" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;dashPattern=8 8;" value="" vertex="1">
           <mxGeometry height="305" width="260" x="160" y="295" as="geometry" />
@@ -41,7 +46,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="sma8xi57MWmZYKXKINMx-31" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Stakeholder" vertex="1">
-          <mxGeometry height="60" width="30" x="60" y="530" as="geometry" />
+          <mxGeometry height="60" width="30" x="90" y="520" as="geometry" />
         </mxCell>
         <mxCell id="Dnfnssyv5SIGvBlbTwxf-7" edge="1" parent="1" source="sma8xi57MWmZYKXKINMx-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;curved=1;dashed=1;dashPattern=8 8;" target="sma8xi57MWmZYKXKINMx-36">
           <mxGeometry relative="1" as="geometry" />
@@ -131,25 +136,11 @@
         <mxCell id="Dnfnssyv5SIGvBlbTwxf-17" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" value="Stadium" vertex="1">
           <mxGeometry height="80" width="120" x="650" y="462.5" as="geometry" />
         </mxCell>
-        <mxCell id="Dnfnssyv5SIGvBlbTwxf-39" edge="1" parent="1" source="Dnfnssyv5SIGvBlbTwxf-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;endArrow=none;endFill=0;">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="590" y="379.9999999999999" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="Dnfnssyv5SIGvBlbTwxf-35" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=17;align=left;" value="&lt;div align=&quot;left&quot;&gt;Conditions:&amp;nbsp;&lt;br&gt;if expectedPop &amp;lt; 300 then Auditorium&lt;br&gt;if expectedPop &amp;gt; 300 then OpenAir&lt;br&gt;if expectedPop &amp;gt; 500 then Stadium&lt;/div&gt;" vertex="1">
-          <mxGeometry height="110" width="210" x="425" y="180" as="geometry" />
-        </mxCell>
         <mxCell id="Dnfnssyv5SIGvBlbTwxf-38" connectable="0" parent="1" style="group" value="" vertex="1">
           <mxGeometry height="80" width="120" x="450" y="340" as="geometry" />
         </mxCell>
-        <mxCell id="sma8xi57MWmZYKXKINMx-36" parent="Dnfnssyv5SIGvBlbTwxf-38" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" value="&lt;div&gt;Reserve a Venue&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Extension points:&lt;br&gt;expectedPop&lt;/div&gt;" vertex="1">
+        <mxCell id="sma8xi57MWmZYKXKINMx-36" parent="Dnfnssyv5SIGvBlbTwxf-38" style="ellipse;whiteSpace=wrap;html=1;fillColor=none;" value="&lt;div&gt;Reserve a Venue&lt;/div&gt;" vertex="1">
           <mxGeometry height="80" width="120" as="geometry" />
-        </mxCell>
-        <mxCell id="Dnfnssyv5SIGvBlbTwxf-37" edge="1" parent="Dnfnssyv5SIGvBlbTwxf-38" style="endArrow=none;html=1;rounded=0;entryX=1.036;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="sma8xi57MWmZYKXKINMx-36" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint y="39.829999999999984" as="sourcePoint" />
-            <mxPoint x="80" y="39.829999999999984" as="targetPoint" />
-          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
