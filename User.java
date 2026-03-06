@@ -5,7 +5,9 @@ public abstract class User {
     private String password;
     private int userID;
 
-    public abstract boolean login();
+    public boolean login(String username, String password) {
+        return (username.equals(this.username) && password.equals(this.password));
+    }
 
     public abstract void updateProfile();
 }
