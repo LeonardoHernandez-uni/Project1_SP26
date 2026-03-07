@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" version="29.6.0">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0" version="29.6.1">
   <diagram name="Page-1" id="COyuOyGq4IeKnYE628Sg">
-    <mxGraphModel dx="4035" dy="1197" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="3819" dy="1009" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
       <root>
         <object label="" id="0">
           <mxCell />
@@ -79,16 +79,16 @@
           <mxGeometry height="25.62693156732892" width="150.73047858942064" y="59.512141280353205" as="geometry" />
         </mxCell>
         <mxCell id="jIF8FInHeJDAS7d67G7l-14" parent="CXJR-vqB3mG_d8mrGxzb-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Customer" vertex="1">
-          <mxGeometry height="128.5077262693157" width="197.8337531486146" y="561.8211920529801" as="geometry" />
+          <mxGeometry height="149.28256070640177" width="197.83" y="550" as="geometry" />
         </mxCell>
         <mxCell id="jIF8FInHeJDAS7d67G7l-15" parent="jIF8FInHeJDAS7d67G7l-14" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="- moneyAvailable: double&lt;div&gt;- hasMembership: boolean&lt;/div&gt;&lt;div&gt;- purchasedTickets: ArrayList&amp;lt;Ticket&amp;gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="53.225165562913915" width="197.8337531486146" y="26" as="geometry" />
+          <mxGeometry height="74" width="197.83" y="26" as="geometry" />
         </mxCell>
         <mxCell id="jIF8FInHeJDAS7d67G7l-16" parent="jIF8FInHeJDAS7d67G7l-14" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
-          <mxGeometry height="7.885209713024284" width="197.8337531486146" y="79.22516556291392" as="geometry" />
+          <mxGeometry height="7.885209713024284" width="197.83" y="100" as="geometry" />
         </mxCell>
         <mxCell id="jIF8FInHeJDAS7d67G7l-17" parent="jIF8FInHeJDAS7d67G7l-14" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ buyTicket(): void&lt;div&gt;+ viewAvailableEvents(): void&lt;/div&gt;" vertex="1">
-          <mxGeometry height="41.397350993377486" width="197.8337531486146" y="87.1103752759382" as="geometry" />
+          <mxGeometry height="41.397350993377486" width="197.83" y="107.88520971302428" as="geometry" />
         </mxCell>
         <mxCell id="jIF8FInHeJDAS7d67G7l-18" parent="CXJR-vqB3mG_d8mrGxzb-1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Sport" vertex="1">
           <mxGeometry height="85.13907284768213" width="150.73047858942064" x="1031.5617128463475" y="577.5916114790288" as="geometry" />
