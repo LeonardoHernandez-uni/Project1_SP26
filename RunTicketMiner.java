@@ -1,5 +1,4 @@
 import java.util.*;
-
 /**
  * TicketMiner's user interface and loading/saving information mechanism.
  * 
@@ -7,6 +6,8 @@ import java.util.*;
  * @author Kevin Pinon
  */
 public class RunTicketMiner {
+    /** */
+    ArrayList<User> userList;
     /** The current user as determined by who the user registers or logs in as. */
     User currentUser;
     /** Accepts input from the user in the terminal */
@@ -18,7 +19,6 @@ public class RunTicketMiner {
      * the user.
      */
     public static void main(String[] args) {
-
         mainMenu();
         input.close();
     }
@@ -57,7 +57,7 @@ public class RunTicketMiner {
         }
     }
 
-    /** Prints register menu options and listens to user input via the terminal. */
+    /** Prints register menu options, executes them, and listens to user input via the terminal. */
     public static void registerMenu() {
 
         System.out.println("[What would you like to register as?]");
@@ -71,6 +71,27 @@ public class RunTicketMiner {
             System.out.print(">> ");
             switch (input.next()) {
                 case "c", "C" -> {
+                    System.out.println("What is your first name?");
+                    String firstName = input.next();
+                    System.out.println("What is your last name?");
+                    String lastName = input.next();
+                    System.out.println("What would you like your username to be?");
+                    String username = input.next();
+                    System.out.println("What would you like your password to be?");
+                    String password = input.next();
+                    System.out.println("How much money would you like to put into your account?");
+                    double moneyAvailable = input.nextDouble();
+                    System.out.println("Would you like to sign up for our TicketMiner membership? (y or n?)");
+                    boolean isMembership;
+                    switch (input.next()) {
+                        case "y", "Y", "yes", "Yes", "YES" -> {
+                            isMembership = true;
+                        }
+                        case "n", "N", "no", "No", "NO" -> {
+                            isMembership = false;
+                        }
+                    }
+                    // Insert constructor for a Customer object then add it to userList
                 }
                 case "o", "O" -> {
 
