@@ -1,3 +1,4 @@
+package models;
 public abstract class Venue {
     private String name;
     private int capacity;

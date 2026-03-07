@@ -1,3 +1,4 @@
+package models;
 public class Ticket {
     private int ticketID;
     private int eventID;

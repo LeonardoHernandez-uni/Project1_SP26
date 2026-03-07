@@ -1,3 +1,4 @@
+package models;
 import java.util.*;
 public class Customer extends User{
     private double moneyAvailable;
@@ -30,4 +31,6 @@ public class Customer extends User{
         
     }
     
+    public double getMoneyAvailable() { return moneyAvailable; }
+    public boolean getHasMembership() { return hasMembership; }
 }

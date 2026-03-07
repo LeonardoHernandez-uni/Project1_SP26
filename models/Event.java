@@ -1,3 +1,4 @@
+package models;
 import java.time.*;
 public abstract class Event {
     private int eventID;

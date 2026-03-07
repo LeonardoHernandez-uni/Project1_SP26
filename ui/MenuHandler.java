@@ -1,34 +1,19 @@
+package ui;
+
 import java.util.*;
-/**
- * TicketMiner's user interface and loading/saving information mechanism.
- * 
- * @author Leonardo Andree Hernandez
- * @author Kevin Pinon
- */
-public class RunTicketMiner {
-    /** */
-    ArrayList<User> userList;
-    /** The current user as determined by who the user registers or logs in as. */
-    User currentUser;
+import models.*;
+import logic.UserManager;
+
+public class MenuHandler {
+    /** asks whether the main menu needs to be printed again. */
+    static boolean printMainMenu = true;
     /** Accepts input from the user in the terminal */
     private static final Scanner input = new Scanner(System.in);
-
-    /**
-     * Initializes all class variables, starts listening to user input in terminal
-     * using the input Scanner, and calls the mainMenu method that provides GUI for
-     * the user.
-     */
-    public static void main(String[] args) {
-        mainMenu();
-        input.close();
-    }
 
     /** Prints the main menu and listens to user input via the terminal. */
     public static void mainMenu() {
         /** ask whether the program has been terminated. */
         boolean isTerminated = false;
-        /** asks whether the main menu needs to be printed again. */
-        boolean printMainMenu = true;
 
         while (!isTerminated) {
             if (printMainMenu) {
@@ -45,21 +30,19 @@ public class RunTicketMiner {
                     printMainMenu = true;
                 }
                 case "l", "L" -> {
+                    // Pulling the list from UserManager
+                    loginMenu(UserManager.getUserList());
+                    printMainMenu = true;
                 }
                 case "exit", "Exit" -> System.out.println("Input invalid. Did you mean \"EXIT\"?");
-                case "EXIT" -> {
-                    isTerminated = true;
-                }
-                default -> {
-                    System.out.println("Input invalid.");
-                }
+                case "EXIT" -> isTerminated = true;
+                default -> System.out.println("Input invalid.");
             }
         }
     }
 
     /** Prints register menu options, executes them, and listens to user input via the terminal. */
     public static void registerMenu() {
-
         System.out.println("[What would you like to register as?]");
         System.out.println("As a Customer --------> c");
         System.out.println("As an Organizer ------> o");
@@ -82,20 +65,21 @@ public class RunTicketMiner {
                     System.out.println("How much money would you like to put into your account?");
                     double moneyAvailable = input.nextDouble();
                     System.out.println("Would you like to sign up for our TicketMiner membership? (y or n?)");
-                    boolean isMembership;
-                    switch (input.next()) {
-                        case "y", "Y", "yes", "Yes", "YES" -> {
-                            isMembership = true;
-                        }
-                        case "n", "N", "no", "No", "NO" -> {
-                            isMembership = false;
-                        }
+                    boolean isMembership = false;
+                    String memberChoice = input.next();
+                    if (memberChoice.equalsIgnoreCase("y") || memberChoice.equalsIgnoreCase("yes")) {
+                        isMembership = true;
                     }
-                    // Insert constructor for a Customer object then add it to userList
-                }
-                case "o", "O" -> {
 
+                    // Using UserManager to get the ID and add the user
+                    int id = UserManager.generateNextID();
+                    Customer customer = new Customer(firstName, lastName, username, password, id, moneyAvailable, isMembership, new ArrayList<>());
+                    UserManager.getUserList().add(customer);
+                    
+                    System.out.println("Registration successful!");
+                    goBack = true;
                 }
+                case "o", "O" -> { }
                 case "b", "B" -> goBack = true;
                 default -> System.out.println("Input invalid");
             }
@@ -103,16 +87,34 @@ public class RunTicketMiner {
         System.out.println("");
     }
 
-    /*
-     * public void loadData() {
-     * }
-     */
-    /*
-     * public void saveData() {
-     * }
-     */
-    /*
-     * public void logAction(String action) {
-     * }
-     */
+    // menu for logging in as an existing user.
+    public static void loginMenu(ArrayList<User> userList) {
+        if (userList.isEmpty()) {
+            System.out.println("System Error: No users loaded.");
+            return;
+        }
+        System.out.println("[Login]");
+        System.out.print("Enter username: ");
+        String usernameInput = input.next();
+        System.out.print("Enter password: ");
+        String passwordInput = input.next();
+
+        boolean found = false;
+        for (User user : userList) {
+            if (user.getUsername().equals(usernameInput) && user.getPassword().equals(passwordInput)) {
+                System.out.println("\nLogin Successful! Welcome, " + user.getFirstName() + " " + user.getLastName());
+                
+                if (user instanceof Customer customer) {
+                    System.out.println("Available Funds: $" + customer.getMoneyAvailable());
+                    System.out.println("Membership Status: " + (customer.getHasMembership() ? "Active" : "Inactive"));
+                }
+                found = true;
+                break; 
+            }
+        }
+
+        if (!found) {
+            System.out.println("Error: Invalid username or password.");
+        }
+    }
 }
