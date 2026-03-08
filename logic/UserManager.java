@@ -17,7 +17,7 @@ public class UserManager {
         String csvSplitBy = ",";
 
         try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) {
-            br.readLine(); 
+            br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(csvSplitBy);
                 int id = Integer.parseInt(data[0]);
@@ -30,30 +30,38 @@ public class UserManager {
                 if (userType.equalsIgnoreCase("Customer")) {
                     double money = Double.parseDouble(data[6]);
                     boolean membership = Boolean.parseBoolean(data[7]);
-                    userList.add(new Customer(firstName, lastName, username, password, id, money, membership, new ArrayList<>()));
-                } 
+                    userList.add(new Customer(firstName, lastName, username, password, id, money, membership,
+                            new ArrayList<>()));
+                }
+                if (userType.equalsIgnoreCase("Organizer")) {
+                    Organizer organizer = new Organizer(firstName, lastName, username, password, id);
+                    UserManager.getUserList().add(organizer);
+                }
+                if (userType.equalsIgnoreCase("Admin")) {
+                    Admin admin = new Admin(firstName, lastName, username, password, id);
+                    UserManager.getUserList().add(admin);
+                }
             }
         } catch (IOException e) {
             System.err.println("Error loading data: " + e.getMessage());
         }
     }
 
-    public static int generateNextID() {
-        int maxID = 0;
-        for (User u : userList) {
-            if (u.getUserID() > maxID) {
-                maxID = u.getUserID();
+    public int generateID() {
+        int[] randomArray = new int[4];
+        int assembledID = 0;
+        boolean isUnique = false;
+        while (!isUnique) {
+            for (int i = 0; i < 4; i++) {
+                randomArray[i] = (int) (Math.random() * 10);
+                assembledID = 10 * assembledID + randomArray[i];
+            }
+            for (User user : userList) {
+                if (user.getUserID() != assembledID) {
+                    isUnique = true;
+                }
             }
         }
-        return maxID + 1;
-    }
-
-    public static User validateLogin(String username, String password) {
-        for (User user : userList) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                return user;
-            }
-        }
-        return null;
+        return assembledID;
     }
 }

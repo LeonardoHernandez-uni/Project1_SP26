@@ -72,7 +72,7 @@ public class MenuHandler {
                     }
 
                     // Using UserManager to get the ID and add the user
-                    int id = UserManager.generateNextID();
+                    int id = UserManager.generateID();
                     Customer customer = new Customer(firstName, lastName, username, password, id, moneyAvailable, isMembership, new ArrayList<>());
                     UserManager.getUserList().add(customer);
                     
@@ -87,7 +87,9 @@ public class MenuHandler {
         System.out.println("");
     }
 
-    // menu for logging in as an existing user.
+    /** Prints the user login menu, prompts user for their login details, then verifies them using userList
+     * @param userList List of users as retrieved by loadUsers() in UserManager class.
+    */
     public static void loginMenu(ArrayList<User> userList) {
         if (userList.isEmpty()) {
             System.out.println("System Error: No users loaded.");
