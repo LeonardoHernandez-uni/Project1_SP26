@@ -1,7 +1,7 @@
 package logic;
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
 import models.*;
 
 public class UserManager {

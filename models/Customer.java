@@ -26,11 +26,6 @@ public class Customer extends User{
 
     }
 
-    @Override
-    public void updateProfile() {
-        
-    }
-    
     public double getMoneyAvailable() { return moneyAvailable; }
     public boolean getHasMembership() { return hasMembership; }
 }

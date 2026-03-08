@@ -28,8 +28,6 @@ public abstract class User {
         return (username.equals(this.username) && password.equals(this.password));
     }
 
-    public abstract void updateProfile();
-
     // Getters and Setters
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
