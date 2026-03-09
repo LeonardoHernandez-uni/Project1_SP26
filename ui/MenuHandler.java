@@ -134,7 +134,7 @@ public class MenuHandler {
                 }
                 if (user instanceof Organizer organizer) {
                 	currentUser = organizer;
-                	System.out.println("Organizer")
+                	System.out.println("Organizer");
                 }
                 if (user instanceof Admin admin) {
                 	currentUser = admin;
