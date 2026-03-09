@@ -15,8 +15,6 @@ public class RunTicketMiner {
     static ArrayList<Venue> venueList = new ArrayList<>();
     /** The current user as determined by who the user registers or logs in as. */
     static User currentUser;
-    /** asks whether the main menu needs to be printed again. */
-    static boolean printMainMenu = true;
     /** Accepts input from the user in the terminal */
     private static final Scanner input = new Scanner(System.in);
 
@@ -28,7 +26,7 @@ public class RunTicketMiner {
     public static void main(String[] args) {
         UserManager.loadData(); 
         VenueManager.loadData();
-        printMainMenu = true;
+        EventManager.loadData();
         MenuHandler.mainMenu();
         input.close();
     }

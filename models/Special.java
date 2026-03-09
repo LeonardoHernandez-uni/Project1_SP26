@@ -1,10 +1,16 @@
+/**
+ * 
+ */
 package models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-/** Our representation of a concert event. */
-public class Concert extends Event {
+/** Our representation of a special event.
+ * 
+ */
+public class Special extends Event {
+
 	/**
 	 * @param id
 	 * @param eventType
@@ -17,8 +23,9 @@ public class Concert extends Event {
 	 * @param bronzePrice
 	 * @param generalAdmissionPrice
 	 */
-	public Concert(int id, String eventType, String name, LocalDate date, LocalTime time, double vipPrice,
+	public Special(int id, String eventType, String name, LocalDate date, LocalTime time, double vipPrice,
 			double goldPrice, double silverPrice, double bronzePrice, double generalAdmissionPrice) {
 		super(id, eventType, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice, generalAdmissionPrice);
 	}
+
 }

@@ -8,7 +8,10 @@ import models.*;
 public class MenuHandler {
     /** asks whether the main menu needs to be printed again. */
     static boolean printMainMenu = true;
+    /** The current logged in user */
+    private static User currentUser = null;
     /** Accepts input from the user in the terminal */
+    private static boolean isCurrentUserAdmin = false;
     private static final Scanner input = new Scanner(System.in);
 
     /** Prints the main menu and listens to user input via the terminal. */
@@ -80,7 +83,24 @@ public class MenuHandler {
                     System.out.println("Registration successful!");
                     goBack = true;
                 }
-                case "o", "O" -> { }
+                case "o", "O" -> {
+                	System.out.println("What is your first name?");
+                    String firstName = input.next();
+                    System.out.println("What is your last name?");
+                    String lastName = input.next();
+                    System.out.println("What would you like your username to be?");
+                    String username = input.next();
+                    System.out.println("What would you like your password to be?");
+                    String password = input.next();
+
+                    // Using UserManager to get the ID and add the user
+                    int id = UserManager.generateID();
+                    Organizer organizer = new Organizer(firstName, lastName, username, password, id);
+                    UserManager.getUserList().add(organizer);
+                    
+                    System.out.println("Registration successful!");
+                    goBack = true;
+                }
                 case "b", "B" -> goBack = true;
                 default -> System.out.println("Input invalid");
             }
@@ -108,8 +128,17 @@ public class MenuHandler {
                 System.out.println("\nLogin Successful! Welcome, " + user.getFirstName() + " " + user.getLastName());
                 
                 if (user instanceof Customer customer) {
+                	currentUser = customer;
                     System.out.println("Available Funds: $" + customer.getMoneyAvailable());
                     System.out.println("Membership Status: " + (customer.getHasMembership() ? "Active" : "Inactive"));
+                }
+                if (user instanceof Organizer organizer) {
+                	currentUser = organizer;
+                	System.out.println("Organizer")
+                }
+                if (user instanceof Admin admin) {
+                	currentUser = admin;
+                	isCurrentUserAdmin = true;
                 }
                 found = true;
                 break; 
