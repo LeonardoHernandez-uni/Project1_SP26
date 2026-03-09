@@ -43,11 +43,11 @@ public class UserManager {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error loading data: " + e.getMessage());
+            System.err.println("Error loading user data: " + e.getMessage());
         }
     }
 
-    public int generateID() {
+    public static int generateID() {
         int[] randomArray = new int[4];
         int assembledID = 0;
         boolean isUnique = false;

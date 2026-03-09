@@ -1,6 +1,6 @@
 package ui;
 import java.util.*;
-import logic.UserManager;
+import logic.*;
 import models.*;
 /**
  * TicketMiner's user interface and loading/saving information mechanism.
@@ -11,6 +11,8 @@ import models.*;
 public class RunTicketMiner {
     /** Loads an array list of users from the "Customer_List_PA1.csv" file in the root folder.*/
     static ArrayList<User> userList = new ArrayList<>();
+    /** Loads an array list of users from the "Venue_List_PA1.csv" file in the root folder. */
+    static ArrayList<Venue> venueList = new ArrayList<>();
     /** The current user as determined by who the user registers or logs in as. */
     static User currentUser;
     /** asks whether the main menu needs to be printed again. */
@@ -25,6 +27,7 @@ public class RunTicketMiner {
      */
     public static void main(String[] args) {
         UserManager.loadData(); 
+        VenueManager.loadData();
         printMainMenu = true;
         MenuHandler.mainMenu();
         input.close();

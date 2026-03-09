@@ -1,8 +1,9 @@
 package ui;
 
 import java.util.*;
-import models.*;
 import logic.UserManager;
+import models.*;
+
 
 public class MenuHandler {
     /** asks whether the main menu needs to be printed again. */
