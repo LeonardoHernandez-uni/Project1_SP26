@@ -13,7 +13,7 @@ public class UserManager {
 
     public static void loadData() {
         String customerFile = "Customer_List_PA1.csv";
-        String line = "";
+        String line;
         String csvSplitBy = ",";
 
         try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) {

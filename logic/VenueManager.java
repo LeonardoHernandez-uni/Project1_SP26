@@ -1,5 +1,6 @@
 package logic;
 
+
 import java.io.*;
 import java.util.*;
 import models.*;
@@ -7,13 +8,13 @@ import models.*;
 public class VenueManager {
     private static ArrayList<Venue> venueList = new ArrayList<>();
 
-    public static ArrayList<Venue> getUserList() {
+    public static ArrayList<Venue> getVenueList() {
         return venueList;
     }
 
     public static void loadData() {
         String customerFile = "Venue_List_PA1.csv";
-        String line = "";
+        String line;
         String csvSplitBy = ",";
 
         try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) {
@@ -23,15 +24,14 @@ public class VenueManager {
                 int id = Integer.parseInt(data[0]);
                 String name = data[1];
                 String type = data[2];
-                int capacity = Integer.parseInt(data[3]);
-                int concertCapacity = Integer.parseInt(data[4]);
-                double cost = Double.parseDouble(data[5]);
-                int vipPercent = Integer.parseInt(data[6]);
-                int goldPercent= Integer.parseInt(data[7]);
-                int silverPercent = Integer.parseInt(data[8]);
-                int bronzePercent = Integer.parseInt(data[9]);
-                int generalAdmissionPercent = Integer.parseInt(data[10]);
-                int reservedExtraPercent = Integer.parseInt(data[11]);
+                int concertCapacity = Integer.parseInt(data[3]);
+                double cost = Double.parseDouble(data[4]);
+                int vipPercent = Integer.parseInt(data[5]);
+                int goldPercent= Integer.parseInt(data[6]);
+                int silverPercent = Integer.parseInt(data[7]);
+                int bronzePercent = Integer.parseInt(data[8]);
+                int generalAdmissionPercent = Integer.parseInt(data[9]);
+                int reservedExtraPercent = Integer.parseInt(data[10]);
 
                 if (type.equalsIgnoreCase("Arena")) {
                     Arena arena = new Arena(id, name, type, concertCapacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent);
