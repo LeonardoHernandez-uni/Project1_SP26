@@ -26,7 +26,7 @@ public class VenueManager {
                 String type = data[2];
                 int concertCapacity = Integer.parseInt(data[3]);
                 double cost = Double.parseDouble(data[4]);
-                int vipPercent = Integer.parseInt(data[5]);
+                double vipPercent = Double.parseDouble(data[5]);
                 int goldPercent= Integer.parseInt(data[6]);
                 int silverPercent = Integer.parseInt(data[7]);
                 int bronzePercent = Integer.parseInt(data[8]);

@@ -7,7 +7,7 @@ public abstract class Venue {
     private String type;
     private int capacity;
     private double cost;
-    private int vipPercent;
+    private double vipPercent;
     private int goldPercent;
     private int silverPercent;
     private int bronzePercent;
@@ -15,7 +15,7 @@ public abstract class Venue {
     private int reservedExtraPercent;
     
     
-    public Venue(int id, String name, String type, int capacity, double cost, int vipPercent, int goldPercent, int silverPercent, int bronzePercent, int generalAdmissionPercent, int reservedExtraPercent) {
+    public Venue(int id, String name, String type, int capacity, double cost, double vipPercent, int goldPercent, int silverPercent, int bronzePercent, int generalAdmissionPercent, int reservedExtraPercent) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -113,7 +113,7 @@ public abstract class Venue {
 	/**
 	 * @return the vipPercent
 	 */
-	public int getVipPercent() {
+	public double getVipPercent() {
 		return vipPercent;
 	}
 
@@ -204,6 +204,7 @@ public abstract class Venue {
 	public void setReservedExtraPercent(int reservedExtraPercent) {
 		this.reservedExtraPercent = reservedExtraPercent;
 	}
+	
 
     
 }

@@ -139,6 +139,7 @@ public class MenuHandler {
                 if (user instanceof Admin admin) {
                 	currentUser = admin;
                 	isCurrentUserAdmin = true;
+                    adminMenu(admin);
                 }
                 found = true;
                 break; 
@@ -147,6 +148,98 @@ public class MenuHandler {
 
         if (!found) {
             System.out.println("Error: Invalid username or password.");
+        }
+    }
+
+
+
+
+
+    // ==========================================
+    // ADMIN SUB-MENUS (Requirement 5.c)
+    // ==========================================
+
+    private static void manageUsers(Admin admin) {
+        System.out.println("\n[Manage Users]\n1. Add User\n2. View/Search\n3. Update\n4. Delete\n5. Back");
+        System.out.print(">> ");
+        switch (input.next()) {
+            case "2" -> {
+                System.out.print("Enter ID, Name, or Username to search: ");
+                User u = admin.searchMember(input.next());
+                if (u != null) System.out.println(u);
+                else System.out.println("User not found.");
+            }
+            case "4" -> {
+                System.out.print("Enter ID, Name, or Username to DELETE: ");
+                User u = admin.searchMember(input.next());
+                if (u != null) {
+                    System.out.print("Are you sure you want to delete " + u.getFirstName() + "? (y/n): ");
+                    if (input.next().equalsIgnoreCase("y")) admin.deleteUser(u);
+                }
+            }
+        }
+    }
+
+    private static void manageVenues(Admin admin) {
+        System.out.println("\n[Manage Venues]\n1. Add Venue\n2. View/Search\n3. Update\n4. Delete\n5. Back");
+        System.out.print(">> ");
+        switch (input.next()) {
+            case "2" -> {
+                System.out.print("Enter Venue ID, Name, or Type to search: ");
+                Venue v = admin.searchVenue(input.next());
+                if (v != null) System.out.println(v);
+                else System.out.println("Venue not found.");
+            }
+            case "4" -> {
+                System.out.print("Enter Venue ID or Name to DELETE: ");
+                Venue v = admin.searchVenue(input.next());
+                if (v != null) {
+                    System.out.print("Confirm deletion of " + v.getName() + "? (y/n): ");
+                    if (input.next().equalsIgnoreCase("y")) admin.deleteVenue(v);
+                }
+            }
+        }
+    }
+
+    private static void manageEvents(Admin admin) {
+        System.out.println("\n[Manage Events]\n1. Add Event\n2. View/Search\n3. Update\n4. Delete\n5. Back");
+        System.out.print(">> ");
+        switch (input.next()) {
+            case "2" -> {
+                System.out.print("Enter Event ID, Name, or Date (YYYY-MM-DD): ");
+                Event e = admin.searchEvent(input.next());
+                if (e != null) System.out.println(e);
+                else System.out.println("Event not found.");
+            }
+            case "4" -> {
+                System.out.print("Enter Event ID or Name to DELETE: ");
+                Event e = admin.searchEvent(input.next());
+                if (e != null) {
+                    System.out.print("Confirm cancellation of " + e.getName() + "? (y/n): ");
+                    if (input.next().equalsIgnoreCase("y")) admin.deleteEvent(e);
+                }
+            }
+        }
+    }
+
+
+
+
+
+    
+
+    public static void adminMenu(Admin admin) {
+        boolean logout = false;
+        while (!logout) {
+            System.out.println("\n[Admin Menu]\n1. Manage Users\n2. Manage Venues\n3. Manage Events\n4. Logout");
+            System.out.print(">> ");
+            switch (input.next()) {
+                case "1" -> manageUsers(admin);
+                case "2" -> manageVenues(admin);
+                case "3" -> manageEvents(admin);
+                case "4" -> logout = true;
+                default -> System.out.println("Invalid choice.");
+            }
         }
     }
 }

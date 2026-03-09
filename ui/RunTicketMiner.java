@@ -24,7 +24,7 @@ public class RunTicketMiner {
      * the user.
      */
     public static void main(String[] args) {
-        UserManager.loadData(); 
+        UserManager.loadData();
         VenueManager.loadData();
         EventManager.loadData();
         MenuHandler.mainMenu();

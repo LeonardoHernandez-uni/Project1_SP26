@@ -16,7 +16,7 @@ import models.Sport;
 public class EventManager {
 	private static ArrayList<Event> eventList = new ArrayList<>();
 
-    public static ArrayList<Event> getVenueList() {
+    public static ArrayList<Event> getEventList() {
         return eventList;
     }
 
@@ -33,7 +33,7 @@ public class EventManager {
                 String type = data[1];
                 String name = data[2];
                 LocalDate date = LocalDate.parse(data[3], DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-                LocalTime time = LocalTime.parse(data[4], DateTimeFormatter.ofPattern("hh:mm a"));
+                LocalTime time = LocalTime.parse(data[4], DateTimeFormatter.ofPattern("h:mm a"));
                 double vipPrice = Double.parseDouble(data[5]);
                 double goldPrice = Double.parseDouble(data[6]);
                 double silverPrice = Double.parseDouble(data[7]);
