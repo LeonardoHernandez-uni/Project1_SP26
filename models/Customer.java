@@ -26,6 +26,12 @@ public class Customer extends User{
 
     }
 
+    @Override
+    public String getUserType() {
+        return "Customer";
+    }
+
     public double getMoneyAvailable() { return moneyAvailable; }
     public boolean getHasMembership() { return hasMembership; }
+    public int getAmountOfTicketsPurchased() {return purchasedTickets.size();}
 }

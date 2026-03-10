@@ -4,7 +4,6 @@ import java.util.*;
 import logic.UserManager;
 import models.*;
 
-
 public class MenuHandler {
     /** asks whether the main menu needs to be printed again. */
     static boolean printMainMenu = true;
@@ -22,9 +21,9 @@ public class MenuHandler {
         while (!isTerminated) {
             if (printMainMenu) {
                 System.out.println("[Welcome to TicketMiner]");
-                System.out.println("Register ---> r");
-                System.out.println("Login ------> l");
-                System.out.println("Exit -------> EXIT");
+                System.out.println("r. Register");
+                System.out.println("l. Login");
+                System.out.println("EXIT. Exit Program");
                 System.out.print(">> ");
                 printMainMenu = false;
             }
@@ -45,14 +44,20 @@ public class MenuHandler {
         }
     }
 
-    /** Prints register menu options, executes them, and listens to user input via the terminal. */
+    /**
+     * Prints register menu options, executes them, and listens to user input via
+     * the terminal.
+     */
     public static void registerMenu() {
         System.out.println("[What would you like to register as?]");
-        System.out.println("As a Customer --------> c");
-        System.out.println("As an Organizer ------> o");
-        System.out.println("Back -----------------> b");
+        System.out.println("c. As a Customer");
+        System.out.println("o. As an Organizer");
+        System.out.println("b. Back to Main Menu");
 
-        /** asks if we can stop looping the user interface listener and go back to the main menu */
+        /**
+         * asks if we can stop looping the user interface listener and go back to the
+         * main menu
+         */
         boolean goBack = false;
         while (!goBack) {
             System.out.print(">> ");
@@ -77,14 +82,15 @@ public class MenuHandler {
 
                     // Using UserManager to get the ID and add the user
                     int id = UserManager.generateID();
-                    Customer customer = new Customer(firstName, lastName, username, password, id, moneyAvailable, isMembership, new ArrayList<>());
+                    Customer customer = new Customer(firstName, lastName, username, password, id, moneyAvailable,
+                            isMembership, new ArrayList<>());
                     UserManager.getUserList().add(customer);
-                    
+
                     System.out.println("Registration successful!");
                     goBack = true;
                 }
                 case "o", "O" -> {
-                	System.out.println("What is your first name?");
+                    System.out.println("What is your first name?");
                     String firstName = input.next();
                     System.out.println("What is your last name?");
                     String lastName = input.next();
@@ -97,7 +103,7 @@ public class MenuHandler {
                     int id = UserManager.generateID();
                     Organizer organizer = new Organizer(firstName, lastName, username, password, id);
                     UserManager.getUserList().add(organizer);
-                    
+
                     System.out.println("Registration successful!");
                     goBack = true;
                 }
@@ -108,9 +114,13 @@ public class MenuHandler {
         System.out.println("");
     }
 
-    /** Prints the user login menu, prompts user for their login details, then verifies them using userList
-     * @param userList List of users as retrieved by loadUsers() in UserManager class.
-    */
+    /**
+     * Prints the user login menu, prompts user for their login details, then
+     * verifies them using userList
+     * 
+     * @param userList List of users as retrieved by loadUsers() in UserManager
+     *                 class.
+     */
     public static void loginMenu(ArrayList<User> userList) {
         if (userList.isEmpty()) {
             System.out.println("System Error: No users loaded.");
@@ -126,23 +136,23 @@ public class MenuHandler {
         for (User user : userList) {
             if (user.getUsername().equals(usernameInput) && user.getPassword().equals(passwordInput)) {
                 System.out.println("\nLogin Successful! Welcome, " + user.getFirstName() + " " + user.getLastName());
-                
+
                 if (user instanceof Customer customer) {
-                	currentUser = customer;
+                    currentUser = customer;
                     System.out.println("Available Funds: $" + customer.getMoneyAvailable());
                     System.out.println("Membership Status: " + (customer.getHasMembership() ? "Active" : "Inactive"));
                 }
                 if (user instanceof Organizer organizer) {
-                	currentUser = organizer;
-                	System.out.println("Organizer");
+                    currentUser = organizer;
+                    System.out.println("Organizer");
                 }
                 if (user instanceof Admin admin) {
-                	currentUser = admin;
-                	isCurrentUserAdmin = true;
+                    currentUser = admin;
+                    isCurrentUserAdmin = true;
                     adminMenu(admin);
                 }
                 found = true;
-                break; 
+                break;
             }
         }
 
@@ -151,30 +161,43 @@ public class MenuHandler {
         }
     }
 
-
-
-
-
-    // ==========================================
-    // ADMIN SUB-MENUS (Requirement 5.c)
-    // ==========================================
-
     private static void manageUsers(Admin admin) {
         System.out.println("\n[Manage Users]\n1. Add User\n2. View/Search\n3. Update\n4. Delete\n5. Back");
         System.out.print(">> ");
         switch (input.next()) {
             case "2" -> {
-                System.out.print("Enter ID, Name, or Username to search: ");
-                User u = admin.searchMember(input.next());
-                if (u != null) System.out.println(u);
-                else System.out.println("User not found.");
+                System.out.println("\n[View/Search Users]\n1. Display All Users \n2. Search for a Member");
+                switch (input.next()) {
+                    case "1" -> {
+                        admin.displayAllMembers();
+                    }
+                    case "2" -> {
+                        System.out.print("Enter ID, Name, or Username to search: ");
+                        User u = admin.searchMember(input.next());
+                        if (u != null) {
+                            System.out.println("User found! ID: " + u.getUserID() + "\tName: " + u.getFirstName() + " " + u.getLastName() + "\tUsername: "
+                                    + u.getUsername() + "\tPassword: " + u.getPassword());
+                            System.out.print("User Type: " + u.getUserType());
+                            if (u instanceof Customer customer) {
+                                System.out.println("\tMoneyAvaliable: " + customer.getMoneyAvailable() + "\tHas Membership: " + customer.getHasMembership() + "\tTickets Purchased: " + customer.getAmountOfTicketsPurchased());
+                            }
+                        } else {
+                            System.out.println("User not found.");
+                        }
+                    }
+                    default -> {
+                        System.out.println("Error: Invalid input.");
+                    }
+                }
+
             }
             case "4" -> {
                 System.out.print("Enter ID, Name, or Username to DELETE: ");
                 User u = admin.searchMember(input.next());
                 if (u != null) {
                     System.out.print("Are you sure you want to delete " + u.getFirstName() + "? (y/n): ");
-                    if (input.next().equalsIgnoreCase("y")) admin.deleteUser(u);
+                    if (input.next().equalsIgnoreCase("y"))
+                        admin.deleteUser(u);
                 }
             }
         }
@@ -187,15 +210,18 @@ public class MenuHandler {
             case "2" -> {
                 System.out.print("Enter Venue ID, Name, or Type to search: ");
                 Venue v = admin.searchVenue(input.next());
-                if (v != null) System.out.println(v);
-                else System.out.println("Venue not found.");
+                if (v != null)
+                    System.out.println(v);
+                else
+                    System.out.println("Venue not found.");
             }
             case "4" -> {
                 System.out.print("Enter Venue ID or Name to DELETE: ");
                 Venue v = admin.searchVenue(input.next());
                 if (v != null) {
                     System.out.print("Confirm deletion of " + v.getName() + "? (y/n): ");
-                    if (input.next().equalsIgnoreCase("y")) admin.deleteVenue(v);
+                    if (input.next().equalsIgnoreCase("y"))
+                        admin.deleteVenue(v);
                 }
             }
         }
@@ -208,25 +234,22 @@ public class MenuHandler {
             case "2" -> {
                 System.out.print("Enter Event ID, Name, or Date (YYYY-MM-DD): ");
                 Event e = admin.searchEvent(input.next());
-                if (e != null) System.out.println(e);
-                else System.out.println("Event not found.");
+                if (e != null)
+                    System.out.println(e);
+                else
+                    System.out.println("Event not found.");
             }
             case "4" -> {
                 System.out.print("Enter Event ID or Name to DELETE: ");
                 Event e = admin.searchEvent(input.next());
                 if (e != null) {
                     System.out.print("Confirm cancellation of " + e.getName() + "? (y/n): ");
-                    if (input.next().equalsIgnoreCase("y")) admin.deleteEvent(e);
+                    if (input.next().equalsIgnoreCase("y"))
+                        admin.deleteEvent(e);
                 }
             }
         }
     }
-
-
-
-
-
-    
 
     public static void adminMenu(Admin admin) {
         boolean logout = false;

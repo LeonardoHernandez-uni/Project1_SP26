@@ -1,0 +1,5 @@
+.classpath
+.project
+.settings/org.eclipse.core.resources.prefs
+logic/.gitignore
+ui/.gitignore

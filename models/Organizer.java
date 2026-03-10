@@ -9,4 +9,9 @@ public class Organizer extends User {
         
     }
 
+    @Override
+    public String getUserType() {
+        return "Organizer";
+    }
+
 }
