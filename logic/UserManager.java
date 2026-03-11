@@ -50,18 +50,22 @@ public class UserManager {
 	public static int generateID() {
 		int[] randomArray = new int[4];
 		int assembledID = 0;
-		boolean isUnique = false;
-		while (!isUnique) {
+		do {
 			for (int i = 0; i < 4; i++) {
 				randomArray[i] = (int) (Math.random() * 10);
 				assembledID = 10 * assembledID + randomArray[i];
 			}
-			for (User user : userList) {
-				if (user.getUserID() != assembledID) {
-					isUnique = true;
-				}
+		} while (!isIDUnique(assembledID));
+		return assembledID;
+	}
+
+	public static boolean isIDUnique(int id) {
+		boolean isUnique = false;
+		for (User user : userList) {
+			if (user.getUserID() != id) {
+				isUnique = true;
 			}
 		}
-		return assembledID;
+		return isUnique;
 	}
 }

@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Dialog;
 import java.util.*;
 import logic.UserManager;
 import models.*;
@@ -175,6 +176,42 @@ public class MenuHandler {
                 String lastName = input.next();
                 System.out.println("Username: ");
                 String userName = input.next();
+                System.out.println("Password: ");
+                String password = input.next();
+                System.out.println("Would you like to generate a unique ID?\t1. Yes\t2. No (You will be prompted to input a unique ID)");
+                int userID;
+                switch(input.next()) {
+                    case "1" -> {
+                        id = UserManager.generateID();
+                    }
+                    case "2" -> {
+                        do { 
+                            id = input.nextInt();
+                        } while (!UserManager.isIDUnique(id));
+                    }
+                    default -> {
+                        System.out.println("Error: Invalid input");
+                    }
+                }
+                double moneyAvailable = 0;
+                boolean hasMembership;
+                if (userType.equals("Customer")) {
+                    System.out.println("Money Avaliable: ");
+                    moneyAvailable = input.nextDouble();
+                    System.out.println("Does this member have a membership?:\t1. Yes\t2. No");
+                    switch (input.next()) {
+                        case "1" -> {
+                            hasMembership = true;
+                        }
+                        case "2" -> {
+                            hasMembership = false;
+                        }
+                        default -> {
+                            System.out.println("Error: Invalid input");
+                        }
+                    }
+                }
+                admin.addMember(userType, firstName, lastName, userName, password, userID, moneyAvailable, hasMembership, new ArrayList<Ticket>());
                 // TODO: Continue adding variables and inputs until all the parameters for Admin.addMember are implemented (Note to self: Question why all those methods are in Admin instead of UserManager)
             }
             case "2" -> {
