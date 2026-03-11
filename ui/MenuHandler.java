@@ -166,6 +166,17 @@ public class MenuHandler {
         System.out.println("\n[Manage Users]\n1. Add User\n2. View/Search\n3. Update\n4. Delete\n5. Back");
         System.out.print(">> ");
         switch (input.next()) {
+            case "1" -> {
+                System.out.println("User Type:\n1. Customer\n2. Organizer\n3. Admin");
+                String userType = input.next();
+                System.out.println("First Name: ");
+                String firstName = input.next();
+                System.out.println("Last Name: ");
+                String lastName = input.next();
+                System.out.println("Username: ");
+                String userName = input.next();
+                // TODO: Continue adding variables and inputs until all the parameters for Admin.addMember are implemented (Note to self: Question why all those methods are in Admin instead of UserManager)
+            }
             case "2" -> {
                 System.out.println("\n[View/Search Users]\n1. Display All Users \n2. Search for a Member");
                 switch (input.next()) {

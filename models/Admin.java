@@ -2,14 +2,29 @@ package models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import logic.EventManager;
 import logic.UserManager;
 import logic.VenueManager;
 
 public class Admin extends User {
-
+    /**  */
     public Admin(String firstName, String lastName, String username, String password, int userID) {
         super(firstName, lastName, username, password, userID);
+    }
+
+    public void addMember(String userType, String firstName, String lastName, String username, String password, int userID, double moneyAvailable, boolean hasMembership, ArrayList<Ticket> purchasedTickets) {
+        switch (userType) {
+            case "Admin" -> {
+                UserManager.getUserList().add(new Admin(firstName, lastName, username, password, userID));
+            }
+            case "Organizer" -> {
+                UserManager.getUserList().add(new Organizer(firstName, lastName, username, password, userID));
+            }
+            case "Customer" -> {
+                UserManager.getUserList().add(new Customer(firstName, lastName, username, password, userID, moneyAvailable, hasMembership, purchasedTickets));
+            }
+        }
     }
 
     public void displayAllMembers() {
