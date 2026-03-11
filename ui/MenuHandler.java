@@ -1,6 +1,5 @@
 package ui;
 
-import java.awt.Dialog;
 import java.util.*;
 import logic.UserManager;
 import models.*;
@@ -11,7 +10,7 @@ public class MenuHandler {
     /** The current logged in user */
     private static User currentUser = null;
     /** Keeps track of whether the currentUser is an Admin or not. */
-        private static boolean isCurrentUserAdmin = false;
+    private static boolean isCurrentUserAdmin = false;
     /** Accepts input from the user in the terminal */
     private static final Scanner input = new Scanner(System.in);
 
@@ -168,8 +167,24 @@ public class MenuHandler {
         System.out.print(">> ");
         switch (input.next()) {
             case "1" -> {
+                String userType = "Undecided";
                 System.out.println("User Type:\n1. Customer\n2. Organizer\n3. Admin");
-                String userType = input.next();
+                do {
+                switch(input.next()) {
+                    case "1" -> {
+                        userType = "Customer";
+                    }
+                    case "2" -> {
+                        userType = "Organizer";
+                    }
+                    case "3" -> {
+                        userType = "Admin";
+                    }
+                    default -> {
+                        System.out.println("Error: Invalid input");
+                    }
+                } }while(userType.equals("Undecided"));
+                
                 System.out.println("First Name: ");
                 String firstName = input.next();
                 System.out.println("Last Name: ");
@@ -178,23 +193,24 @@ public class MenuHandler {
                 String userName = input.next();
                 System.out.println("Password: ");
                 String password = input.next();
+                int userID = 0;
                 System.out.println("Would you like to generate a unique ID?\t1. Yes\t2. No (You will be prompted to input a unique ID)");
-                int userID;
                 switch(input.next()) {
                     case "1" -> {
-                        id = UserManager.generateID();
+                        userID = UserManager.generateID();
                     }
                     case "2" -> {
+                        System.out.println("Please input an ID: ");
                         do { 
-                            id = input.nextInt();
-                        } while (!UserManager.isIDUnique(id));
+                            userID = input.nextInt();
+                        } while (UserManager.isIDUnique(userID) == false);
                     }
                     default -> {
                         System.out.println("Error: Invalid input");
                     }
                 }
                 double moneyAvailable = 0;
-                boolean hasMembership;
+                boolean hasMembership = false;
                 if (userType.equals("Customer")) {
                     System.out.println("Money Avaliable: ");
                     moneyAvailable = input.nextDouble();
@@ -212,7 +228,6 @@ public class MenuHandler {
                     }
                 }
                 admin.addMember(userType, firstName, lastName, userName, password, userID, moneyAvailable, hasMembership, new ArrayList<Ticket>());
-                // TODO: Continue adding variables and inputs until all the parameters for Admin.addMember are implemented (Note to self: Question why all those methods are in Admin instead of UserManager)
             }
             case "2" -> {
                 System.out.println("\n[View/Search Users]\n1. Display All Users \n2. Search for a Member");

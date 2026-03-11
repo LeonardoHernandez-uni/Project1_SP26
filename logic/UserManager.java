@@ -60,10 +60,10 @@ public class UserManager {
 	}
 
 	public static boolean isIDUnique(int id) {
-		boolean isUnique = false;
+		boolean isUnique = true;
 		for (User user : userList) {
-			if (user.getUserID() != id) {
-				isUnique = true;
+			if (user.getUserID() == id) {
+				isUnique = false;
 			}
 		}
 		return isUnique;
