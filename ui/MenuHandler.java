@@ -194,15 +194,21 @@ public class MenuHandler {
                 System.out.println("Password: ");
                 String password = input.next();
                 int userID = 0;
-                System.out.println("Would you like to generate a unique ID?\t1. Yes\t2. No (You will be prompted to input a unique ID)");
+                System.out.println("Would you like us to generate a unique ID?\t1. Yes\t2. No (You will be prompted to input a unique ID)");
                 switch(input.next()) {
                     case "1" -> {
                         userID = UserManager.generateID();
                     }
                     case "2" -> {
-                        System.out.println("Please input an ID: ");
-                        do { 
-                            userID = input.nextInt();
+                        System.out.println("Please input a unique ID:");
+                        do {
+                            try {
+                            userID = Integer.parseInt(input.next());
+                            if (UserManager.isIDUnique(userID) == false) {System.out.println("The ID you entered isn't unique, please try again.");}
+                            } catch (java.lang.NumberFormatException e) {
+                                System.out.println("Error: Invalid Input (Please enter a whole number, preferrably one with no more than four digits)");
+                                userID = 0;
+                            }
                         } while (UserManager.isIDUnique(userID) == false);
                     }
                     default -> {
@@ -210,12 +216,13 @@ public class MenuHandler {
                     }
                 }
                 double moneyAvailable = 0;
-                boolean hasMembership = false;
+                Boolean hasMembership = null;
                 if (userType.equals("Customer")) {
                     System.out.println("Money Avaliable: ");
-                    moneyAvailable = input.nextDouble();
+                    moneyAvailable = Double.parseDouble(input.next());
                     System.out.println("Does this member have a membership?:\t1. Yes\t2. No");
-                    switch (input.next()) {
+                    do {
+                        switch (input.next()) {
                         case "1" -> {
                             hasMembership = true;
                         }
@@ -226,8 +233,11 @@ public class MenuHandler {
                             System.out.println("Error: Invalid input");
                         }
                     }
+                    }while(hasMembership == null);
+                    
                 }
                 admin.addMember(userType, firstName, lastName, userName, password, userID, moneyAvailable, hasMembership, new ArrayList<Ticket>());
+                System.out.println(userType + " " + firstName + " " + lastName + " has been created successfully!");
             }
             case "2" -> {
                 System.out.println("\n[View/Search Users]\n1. Display All Users \n2. Search for a Member");
