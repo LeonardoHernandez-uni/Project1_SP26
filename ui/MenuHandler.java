@@ -9,8 +9,9 @@ public class MenuHandler {
     static boolean printMainMenu = true;
     /** The current logged in user */
     private static User currentUser = null;
+    /** Keeps track of whether the currentUser is an Admin or not. */
+        private static boolean isCurrentUserAdmin = false;
     /** Accepts input from the user in the terminal */
-    private static boolean isCurrentUserAdmin = false;
     private static final Scanner input = new Scanner(System.in);
 
     /** Prints the main menu and listens to user input via the terminal. */

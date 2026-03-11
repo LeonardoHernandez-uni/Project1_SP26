@@ -41,7 +41,6 @@ public class Admin extends User {
     }
 
     public boolean updateUsername(User u, String newUsername) {
-        // Requirement 5.c.i.3.a.ii: Username must be unique [cite: 94]
         for (User existingUser : UserManager.getUserList()) {
             if (existingUser.getUsername().equalsIgnoreCase(newUsername)) {
                 return false; // Registration fails, not unique [cite: 95]
