@@ -14,7 +14,9 @@ public class MenuHandler {
     /** Accepts input from the user in the terminal */
     private static final Scanner input = new Scanner(System.in);
 
-    /** Prints the main menu and listens to user input via the terminal. */
+    /** Prints the main menu and listens to user input via the terminal. From the main menu, users can register, login, or exit. When the program exits, a call is made to all the type managers to save 
+     * the contents of their respective ArrayList to a csv file.
+     */
     public static void mainMenu() {
         boolean isTerminated = false;
 

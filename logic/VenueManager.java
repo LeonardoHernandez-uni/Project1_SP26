@@ -5,19 +5,25 @@ import java.io.*;
 import java.util.*;
 import models.*;
 
-public class VenueManager {
+public class VenueManager {    
+    /** venueList stores all the venue in the system as Venue objects within an ArrayList. It is what we load/save data to, and its what we access to modify venue entries. */
     private static ArrayList<Venue> venueList = new ArrayList<>();
 
+    /** Returns venueList. Is used for accessing venueList from other classes.*/
     public static ArrayList<Venue> getVenueList() {
         return venueList;
     }
 
+    
+	/** Loads data from the venue file (in this case Venue_List_PA1.csv) and parses its entries row by row into venueList as Venue objects, assigning parameters to them column by column.
+	 *  The method will use the 3rd column of the csv, the venueList column, to determine whether the Venue will be an Arena, an Auditorium, OpenAir, or a Stadium.
+	 */
     public static void loadData() {
-        String customerFile = "Venue_List_PA1.csv";
+        String venueFile = "Venue_List_PA1.csv";
         String line;
         String csvSplitBy = ",";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(customerFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(venueFile))) {
             br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(csvSplitBy);

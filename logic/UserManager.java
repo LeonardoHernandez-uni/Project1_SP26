@@ -5,12 +5,18 @@ import java.util.*;
 import models.*;
 
 public class UserManager {
+	
+    /** userList stores all the users in the system as USer objects within an ArrayList. It is what we load/save data to, and its what we access to modify user entries. */
 	private static ArrayList<User> userList = new ArrayList<>();
 
+	/** Returns userList. Is used for accessing userList from other classes.*/
 	public static ArrayList<User> getUserList() {
 		return userList;
 	}
 
+	/** Loads data from the customer file (in this case Customer_List_PA1.csv) and parses its entries row by row into userList as User objects, assigning parameters to them column by column.
+	 *  The method will use the 6th column of the csv, the userType column, to determine whether the User will be a Customer, an Organizer, or an Admin.
+	 */
 	public static void loadData() {
 		String customerFile = "Customer_List_PA1.csv";
 		String line;
@@ -47,6 +53,10 @@ public class UserManager {
 		}
 	}
 
+	/** generateID randomly generates a new 4 digit ID. After a new ID is generated, it is compared to all the IDs in userList using the isIDUnique() method. If the ID isn't unique, a new ID will be generated until
+	 * the isIDUnique() method returns true.
+	 * @return The randomly generated unique ID.
+	*/
 	public static int generateID() {
 		int[] randomArray = new int[4];
 		int assembledID = 0;
@@ -59,6 +69,10 @@ public class UserManager {
 		return assembledID;
 	}
 
+	/** isIDUnique compares the given int to all userIDs in userList to check for uniqueness. If it returns true, the given int is unique. If it returns false, the given int is not unique.
+	 * @param id The int we are checking against all userID ints in userList.
+	 * @return Will either be true or false
+	*/
 	public static boolean isIDUnique(int id) {
 		boolean isUnique = true;
 		for (User user : userList) {
