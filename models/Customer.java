@@ -50,8 +50,10 @@ public class Customer extends User{
     public String getUserType() {
         return "Customer";
     }
-
+    /** Returns the amount of funds a user has available in thier account as a double */
     public double getMoneyAvailable() { return moneyAvailable; }
+    /** Returns whether a customer has a membership or not as either true or false. */
     public boolean getHasMembership() { return hasMembership; }
+    /** Returns the amount of tickets a customer has purchased by getting the size of the purchased tickets ArrayList */
     public int getAmountOfTicketsPurchased() {return purchasedTickets.size();}
 }

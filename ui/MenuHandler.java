@@ -16,7 +16,6 @@ public class MenuHandler {
 
     /** Prints the main menu and listens to user input via the terminal. */
     public static void mainMenu() {
-        /** ask whether the program has been terminated. */
         boolean isTerminated = false;
 
         while (!isTerminated) {
@@ -46,8 +45,10 @@ public class MenuHandler {
     }
 
     /**
-     * Prints register menu options, executes them, and listens to user input via
-     * the terminal.
+     * Prints register menu options and listens to user input via Scanner input in the main method. 
+     * By inputting a series of options, the gui can be used to create a Customer or an Organizer user object with 
+     * the given attributes, after which said user object will be stored to userList.
+     * 
      */
     public static void registerMenu() {
         System.out.println("[What would you like to register as?]");
@@ -55,10 +56,6 @@ public class MenuHandler {
         System.out.println("o. As an Organizer");
         System.out.println("b. Back to Main Menu");
 
-        /**
-         * asks if we can stop looping the user interface listener and go back to the
-         * main menu
-         */
         boolean goBack = false;
         while (!goBack) {
             System.out.print(">> ");
@@ -117,7 +114,8 @@ public class MenuHandler {
 
     /**
      * Prints the user login menu, prompts user for their login details, then
-     * verifies them using userList
+     * verifies them by checking if they exist in userList. If they do not, access is denied to the user 
+     * and the program will go back to the main menu.
      * 
      * @param userList List of users as retrieved by loadUsers() in UserManager
      *                 class.
@@ -162,6 +160,11 @@ public class MenuHandler {
         }
     }
 
+    /** Prints a gui and listens to user input to manage users by performing methods located within the Admin User object 
+     * class. The method takes a User Admin called admin in order to access these methods and edit various 
+     * entries in the userList ArrayList.
+     * @param admin The Admin User object logged in and performing edits to.
+     */
     private static void manageUsers(Admin admin) {
         System.out.println("\n[Manage Users]\n1. Add User\n2. View/Search\n3. Update\n4. Delete\n5. Back");
         System.out.print(">> ");
@@ -277,6 +280,11 @@ public class MenuHandler {
         }
     }
 
+    /** Prints a gui and listens to user input to manage venues by performing methods located within the Admin User object 
+     * class. The method takes a User Admin called admin in order to access these methods and edit various 
+     * entries in the venueList ArrayList.
+     * @param admin The Admin User object logged in and performing edits to the venueList.
+     */
     private static void manageVenues(Admin admin) {
         System.out.println("\n[Manage Venues]\n1. Add Venue\n2. View/Search\n3. Update\n4. Delete\n5. Back");
         System.out.print(">> ");
@@ -301,6 +309,10 @@ public class MenuHandler {
         }
     }
 
+    /** Prints a gui and listens to user input to manage events by performing methods located within the Admin User object 
+     * class. The method takes a User Admin called admin in order to access these methods and edit various 
+     * entries in the eventList ArrayList.
+     * @param admin The Admin User object logged in and performing edits to the eventList. */
     private static void manageEvents(Admin admin) {
         System.out.println("\n[Manage Events]\n1. Add Event\n2. View/Search\n3. Update\n4. Delete\n5. Back");
         System.out.print(">> ");
@@ -325,6 +337,11 @@ public class MenuHandler {
         }
     }
 
+    /** Prints a gui providing Admin User objects the choice to modify userList, venueList, or eventList entries. 
+     * Each choice sends the admin to a menu of options for adding, viewing, updating, and deleting entries in each 
+     * respective ArrayList.
+     * @param admin The Admin User object logged in and performing edits to the selected object type.
+     */
     public static void adminMenu(Admin admin) {
         boolean logout = false;
         while (!logout) {

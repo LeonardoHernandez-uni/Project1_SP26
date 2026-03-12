@@ -8,7 +8,13 @@ import logic.UserManager;
 import logic.VenueManager;
 
 public class Admin extends User {
-    /**  */
+    /** Constructs an admin class by taking superclass User's parameters and instantiating them in a super class
+     * @param firstName The user's first name.
+     * @param lastName The user's last name.
+     * @param username The user's username.
+     * @param password The user's password.
+     * @param userID The user's unique ID (encouraged to be no more than 4 digits seeing that typing long values out is tedious ;-;)
+     */
     public Admin(String firstName, String lastName, String username, String password, int userID) {
         super(firstName, lastName, username, password, userID);
     }
