@@ -62,19 +62,4 @@ public class EventManager {
             System.err.println("Error loading venue data: " + e.getMessage());
         }
     }
-	public void createEvent() {
-		
-	}
-
-    public boolean cancelEvent() {
-    	return false;
-    }
-
-    public void changeDate() {
-    	
-    }
-
-    public void changeName() {
-    	
-    }
 }

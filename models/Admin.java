@@ -19,6 +19,18 @@ public class Admin extends User {
         super(firstName, lastName, username, password, userID);
     }
 
+    /** Creates a new User of either an Admin, Organizer, or Customer object type and assigns its parameters with the given parameters.
+     * 
+     * @param userType The intended User type. Can be Admin, Organizer, or Customer.
+     * @param firstName First name to be given to the new User.
+     * @param lastName Last name to be given to the new User.
+     * @param username Username to be given to the new User.
+     * @param password Password to be given to the new User.
+     * @param userID ID to be given to the new User.
+     * @param moneyAvailable Money avaliable in account to be given to a new User should their type be Customer.
+     * @param hasMembership Membership status to be given to a new User should their type be Customer.
+     * @param purchasedTickets An ArrayList of Tickets to be given to the new user should their type be Customer.
+     */
     public void addMember(String userType, String firstName, String lastName, String username, String password, int userID, double moneyAvailable, boolean hasMembership, ArrayList<Ticket> purchasedTickets) {
         switch (userType) {
             case "Admin" -> {
@@ -30,9 +42,13 @@ public class Admin extends User {
             case "Customer" -> {
                 UserManager.getUserList().add(new Customer(firstName, lastName, username, password, userID, moneyAvailable, hasMembership, purchasedTickets));
             }
+            default -> {
+                System.out.println("Error: addMember() method recieved an invalid userType string and isn't happy :(");
+            }
         }
     }
 
+    /** Displays all member data from userList by printing every User in a row of attributes where every column is an attribute.*/
     public void displayAllMembers() {
         System.out.println("\n--- All Members ---");
         for (User u : UserManager.getUserList()) {
@@ -41,6 +57,10 @@ public class Admin extends User {
 
     }
 
+    /** Given a string, searchMember() will check whether this String belongs to a User in userList. If it does (and there are no duplicates (To-do: fix that)), the method will return that User. If there are no Users 
+     * with attributes that match the query, the method will return null
+     * @return The user who's attributes matched the query String. Will return null if no User is found to match the query.
+     */
     public User searchMember(String query) {
         for (User u : UserManager.getUserList()) {
             // Checks ID, first name, last name, full name, or username [cite: 79]
@@ -56,21 +76,33 @@ public class Admin extends User {
         return null;
     }
 
+    /** Given a User u and a full name, the method will update the user's first and last name attributes.
+     * 
+     * @param u The User who's name we wish to update.
+     * @param newFirstName The new first name we are assigning to our User.
+     * @param newLastName The new last name we are assigning to our User.
+    */
     public void updateUserName(User u, String newFirstName, String newLastName) {
         u.setFirstName(newFirstName);
         u.setLastName(newLastName);
     }
 
+    /** Given a User u and a new username, we update the User's username. The method also checks if the username is unique and returns the result. If said result is false, the username isn't updated).
+     * 
+     * @param u The User who's username we wish to update.
+     * @param newUsername The new username we are assigning to our User.
+     * @return The result of trying to update username. If it is successful, it returns true. If it was not, it returns false.
+    */
     public boolean updateUsername(User u, String newUsername) {
         for (User existingUser : UserManager.getUserList()) {
             if (existingUser.getUsername().equalsIgnoreCase(newUsername)) {
-                return false; // Registration fails, not unique [cite: 95]
+                return false; // Registration fails since the username isn't unique
             }
         }
         u.setUsername(newUsername);
         return true;
     }
-
+    
     public void updateUserPassword(User u, String newPassword) {
         u.setPassword(newPassword);
     }
