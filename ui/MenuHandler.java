@@ -221,27 +221,31 @@ public class MenuHandler {
                     }
                 }
                 double moneyAvailable = 0;
-                Boolean hasMembership = null;
+                boolean hasMembership = false;
+                boolean moveOn = false; // Keeps track of whether we can move on from a menu (get out of a repeating menu's loop)
                 if (userType.equals("Customer")) {
                     System.out.println("Money Avaliable: ");
                     moneyAvailable = Double.parseDouble(input.next());
                     System.out.println("Does this member have a membership?:\t1. Yes\t2. No");
                     do {
+                        
                         switch (input.next()) {
                         case "1" -> {
                             hasMembership = true;
+                            moveOn = true;
                         }
                         case "2" -> {
                             hasMembership = false;
+                            moveOn = true;
                         }
                         default -> {
                             System.out.println("Error: Invalid input");
                         }
                     }
-                    }while(hasMembership == null);
+                    }while(!moveOn);
                     
                 }
-                admin.addMember(userType, firstName, lastName, userName, password, userID, moneyAvailable, hasMembership, new ArrayList<Ticket>());
+                admin.addMember(userType, firstName, lastName, userName, password, userID, moneyAvailable, hasMembership, new ArrayList<>());
                 System.out.println(userType + " " + firstName + " " + lastName + " has been created successfully!");
             }
             case "2" -> {
