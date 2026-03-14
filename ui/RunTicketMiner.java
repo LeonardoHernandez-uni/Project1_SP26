@@ -28,6 +28,9 @@ public class RunTicketMiner {
         VenueManager.loadData();
         EventManager.loadData();
         MenuHandler.mainMenu();
+        UserManager.saveData();
+        VenueManager.saveData();
+        
         input.close();
     }
 

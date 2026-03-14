@@ -1,6 +1,8 @@
 package logic;
 
 import java.io.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import models.*;
 
@@ -50,6 +52,23 @@ public class UserManager {
 			}
 		} catch (IOException e) {
 			System.err.println("Error loading user data: " + e.getMessage());
+		}
+	}
+
+	public static void saveData() {
+		DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+		try (FileWriter file = new FileWriter(LocalDate.now().format(pattern) + "_Customer_List_PA1.csv")) {
+			// Following line writes very first row (which contains labels for the chart)
+			file.write("ID,First Name,Last Name,Username,Password,User Type,Money Available,TicketMiner Membership,Concerts Purchased\n");
+			for (User user: userList) {
+				file.write(user.getUserID() + "," + user.getFirstName() + "," + user.getLastName() + "," + user.getUsername() + "," + user.getPassword() + "," + user.getUserType() + ",");
+				if (user instanceof Customer customer) {
+					file.write(String.valueOf(customer.getMoneyAvailable()) + "," + customer.getHasMembership() + "," + customer.getAmountOfTicketsPurchased());
+				}
+				file.write("\n");
+			}
+		} catch (IOException e) {
+			System.err.println("Error saving user data: " + e.getMessage());
 		}
 	}
 
