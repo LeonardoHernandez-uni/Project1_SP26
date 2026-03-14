@@ -93,6 +93,7 @@ public class MenuHandler {
                     UserManager.getUserList().add(customer);
 
                     System.out.println("Registration successful!");
+                    RunTicketMiner.logAction(firstName + lastName + "(ID: " + id + ") created a Customer account successfully");
                     goBack = true;
                 }
                 case "o", "O" -> {
@@ -111,6 +112,7 @@ public class MenuHandler {
                     UserManager.getUserList().add(organizer);
 
                     System.out.println("Registration successful!");
+                    RunTicketMiner.logAction(firstName + lastName + "(ID: " + id + ") created an Organizer account successfully");
                     goBack = true;
                 }
                 case "b", "B" -> goBack = true;
@@ -143,6 +145,7 @@ public class MenuHandler {
         for (User user : userList) {
             if (user.getUsername().equals(usernameInput) && user.getPassword().equals(passwordInput)) {
                 System.out.println("\nLogin Successful! Welcome, " + user.getFirstName() + " " + user.getLastName());
+                RunTicketMiner.logAction(user.getUserType() + " " + user.getFirstName() + " " + user.getLastName() + " successfully logged into their account.");
 
                 if (user instanceof Customer customer) {
                     currentUser = customer;
@@ -253,12 +256,14 @@ public class MenuHandler {
                 }
                 admin.addMember(userType, firstName, lastName, userName, password, userID, moneyAvailable, hasMembership, new ArrayList<>());
                 System.out.println(userType + " " + firstName + " " + lastName + " has been created successfully!");
+                RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " created a new " + userType + "(ID: " + userID + ").");
             }
             case "2" -> {
                 System.out.println("\n[View/Search Users]\n1. Display All Users \n2. Search for a Member");
                 switch (input.next()) {
                     case "1" -> {
                         admin.displayAllMembers();
+                        RunTicketMiner.logAction(currentUser.getUserType() + " printed all members to the console.");
                     }
                     case "2" -> {
                         System.out.print("Enter ID, Name, or Username to search: ");
@@ -270,8 +275,10 @@ public class MenuHandler {
                             if (u instanceof Customer customer) {
                                 System.out.println("\tMoneyAvaliable: " + customer.getMoneyAvailable() + "\tHas Membership: " + customer.getHasMembership() + "\tTickets Purchased: " + customer.getAmountOfTicketsPurchased());
                             }
+                            RunTicketMiner.logAction(currentUser.getUserType() + " searched and found information for user " + u.getUserID);
                         } else {
                             System.out.println("User not found.");
+                            RunTicketMiner.logAction(currentUser.getUserType() + " attempted to search for a user but didn't find them.");
                         }
                     }
                     default -> {
@@ -293,6 +300,7 @@ public class MenuHandler {
                             String newLastName = input.next();
                             admin.updateUserName(u, newFirstName, newLastName);
                             System.out.println("Name updated successfully!");
+                            RunTicketMiner.actionLog(currentUser.getUserType() + " " + currentUser.get)
                         }
                         case "2" -> {
                             boolean usernameUpdated = false;
