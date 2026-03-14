@@ -6,6 +6,7 @@ public abstract class Venue {
     private String name;
     private String type;
     private int capacity;
+	private int concertCapacity;
     private double cost;
     private double vipPercent;
     private int goldPercent;
@@ -15,11 +16,12 @@ public abstract class Venue {
     private int reservedExtraPercent;
     
     
-    public Venue(int id, String name, String type, int capacity, double cost, double vipPercent, int goldPercent, int silverPercent, int bronzePercent, int generalAdmissionPercent, int reservedExtraPercent) {
+    public Venue(int id, String name, String type, int capacity, int concertCapacity, double cost, double vipPercent, int goldPercent, int silverPercent, int bronzePercent, int generalAdmissionPercent, int reservedExtraPercent) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.capacity = capacity;
+		this.concertCapacity = concertCapacity;
         this.cost = cost;
         this.vipPercent = vipPercent;
         this.goldPercent = goldPercent;
@@ -93,6 +95,19 @@ public abstract class Venue {
 		this.capacity = capacity;
 	}
 
+	/**
+	 * @return the concert's capacity
+	 */
+	public int getConcertCapacity() {
+		return concertCapacity;
+	}
+
+	/** 
+	 * @param concertCapacity the concert capacity to set
+	 */
+	public void setConcertCapacity(int concertCapacity) {
+		this.concertCapacity = concertCapacity;
+	}
 
 	/**
 	 * @return the cost

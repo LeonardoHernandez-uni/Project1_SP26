@@ -43,34 +43,34 @@ public class VenueManager {
                 int id = Integer.parseInt(data[0]);
                 String name = data[1];
                 String type = data[2];
-                int concertCapacity = Integer.parseInt(data[3]);
-                double cost = Double.parseDouble(data[4]);
-                double vipPercent = Double.parseDouble(data[5]);
-                int goldPercent = Integer.parseInt(data[6]);
-                int silverPercent = Integer.parseInt(data[7]);
-                int bronzePercent = Integer.parseInt(data[8]);
-                int generalAdmissionPercent = Integer.parseInt(data[9]);
-                int reservedExtraPercent = Integer.parseInt(data[10]);
+
+                int capacity = Integer.parseInt(data[3]);
+                int concertCapacity = Integer.parseInt(data[4]);
+                double cost = Double.parseDouble(data[5]);
+
+                double vipPercent = Double.parseDouble(data[6]);
+                int goldPercent = Integer.parseInt(data[7]);
+                int silverPercent = Integer.parseInt(data[8]);
+                int bronzePercent = Integer.parseInt(data[9]);
+                int generalAdmissionPercent = Integer.parseInt(data[10]);
+                int reservedExtraPercent = Integer.parseInt(data[11]);
 
                 if (type.equalsIgnoreCase("Arena")) {
-                    Arena arena = new Arena(id, name, type, concertCapacity, cost, vipPercent, goldPercent,
-                            silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent);
-                    venueList.add(arena);
-                }
-                if (type.equalsIgnoreCase("Auditorium")) {
-                    Auditorium auditorium = new Auditorium(id, name, type, concertCapacity, cost, vipPercent,
-                            goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent);
-                    venueList.add(auditorium);
-                }
-                if (type.equalsIgnoreCase("OpenAir")) {
-                    OpenAir openAir = new OpenAir(id, name, type, concertCapacity, cost, vipPercent, goldPercent,
-                            silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent);
-                    venueList.add(openAir);
-                }
-                if (type.equalsIgnoreCase("Stadium")) {
-                    Stadium stadium = new Stadium(id, name, type, concertCapacity, cost, vipPercent, goldPercent,
-                            silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent);
-                    venueList.add(stadium);
+                    venueList.add(new Arena(id, name, type, capacity,concertCapacity, cost, vipPercent,
+                            goldPercent, silverPercent, bronzePercent,
+                            generalAdmissionPercent, reservedExtraPercent));
+                } else if (type.equalsIgnoreCase("Auditorium")) {
+                    venueList.add(new Auditorium(id, name, type, capacity,  concertCapacity, cost, vipPercent,
+                            goldPercent, silverPercent, bronzePercent,
+                            generalAdmissionPercent, reservedExtraPercent));
+                } else if (type.equalsIgnoreCase("Open Air")) {
+                    venueList.add(new OpenAir(id, name, type, capacity, concertCapacity, cost, vipPercent,
+                            goldPercent, silverPercent, bronzePercent,
+                            generalAdmissionPercent, reservedExtraPercent));
+                } else if (type.equalsIgnoreCase("Stadium")) {
+                    venueList.add(new Stadium(id, name, type, capacity, concertCapacity, cost, vipPercent,
+                            goldPercent, silverPercent, bronzePercent,
+                            generalAdmissionPercent, reservedExtraPercent));
                 }
             }
         } catch (IOException e) {
@@ -79,16 +79,33 @@ public class VenueManager {
     }
 
     public static void saveData() {
-        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy_MM_dd_");
+
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+
         try (FileWriter file = new FileWriter(LocalDate.now().format(pattern) + "_Venue_List_PA1.csv")) {
-            // Following line writes very first row (which contains labels for the chart)
-            file.write("ID,Name,Type,Capacity,Concert Capacity,Cost,VIP Percent,Gold Percent,Silver Percent,Bronze Percent,General Admission Percent,Reserved Extra Percent\n");
+
+            file.write(
+                    "ID,Name,Type,Capacity,Concert Capacity,Cost,VIP Percent,Gold Percent,Silver Percent,Bronze Percent,General Admission Percent,Reserved Extra Percent\n");
+
             for (Venue venue : venueList) {
-                file.write(venue.getId() + "," + venue.getName() + "," + venue.getType() + "," + venue.getCapacity() + "," + venue.getCapacity() + "," + venue.getCost() + "," + venue.getVipPercent() + "," + venue.getGoldPercent() + "," + venue.getSilverPercent() + "," + venue.getBronzePercent() + "," + venue.getGeneralAdmissionPercent() + "," + venue.getReservedExtraPercent());
-                file.write("\n");
+                //Word wrapping is weird lowk
+                file.write(
+                        venue.getId() + "," +
+                                venue.getName() + "," +
+                                venue.getType() + "," +
+                                venue.getCapacity() + "," +
+                                venue.getConcertCapacity() + "," + 
+                                venue.getCost() + "," +
+                                venue.getVipPercent() + "," +
+                                venue.getGoldPercent() + "," +
+                                venue.getSilverPercent() + "," +
+                                venue.getBronzePercent() + "," +
+                                venue.getGeneralAdmissionPercent() + "," +
+                                venue.getReservedExtraPercent() + "\n");
             }
+
         } catch (IOException e) {
-            System.err.println("Error saving user data: " + e.getMessage());
+            System.err.println("Error saving venue data: " + e.getMessage());
         }
     }
 }

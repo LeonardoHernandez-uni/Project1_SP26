@@ -120,6 +120,7 @@ public class Admin extends User {
                 v.getName() + " | " +
                 v.getType() + " | " +
                 v.getCapacity() + " | " +
+                v.getConcertCapacity() + "|" +
                 v.getCost() + " | " +
                 v.getVipPercent() + " | " +
                 v.getGoldPercent() + " | " +
@@ -131,13 +132,13 @@ public class Admin extends User {
         }
     }
 
-    public void addVenue(String type, String name, int capacity, double cost, double vipPercent, int goldPercent, int silverPercent, int bronzePercent, int generalAdmissionPercent, int reservedExtraPercent) {
+    public void addVenue(String type, String name, int capacity, int concertCapacity, double cost, double vipPercent, int goldPercent, int silverPercent, int bronzePercent, int generalAdmissionPercent, int reservedExtraPercent) {
         int newID = VenueManager.getVenueList().stream().mapToInt(Venue::getId).max().orElse(0) + 1;
         switch (type) {
-            case "Arena" -> VenueManager.getVenueList().add(new Arena(newID, name, type, capacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent));
-            case "Auditorium" -> VenueManager.getVenueList().add(new Auditorium(newID, name, type, capacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent));
-            case "OpenAir" -> VenueManager.getVenueList().add(new OpenAir(newID, name, type, capacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent));
-            case "Stadium" -> VenueManager.getVenueList().add(new Stadium(newID, name, type, capacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent));
+            case "Arena" -> VenueManager.getVenueList().add(new Arena(newID, name, type, capacity, concertCapacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent));
+            case "Auditorium" -> VenueManager.getVenueList().add(new Auditorium(newID, name, type, capacity, concertCapacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent));
+            case "OpenAir" -> VenueManager.getVenueList().add(new OpenAir(newID, name, type, capacity, concertCapacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent));
+            case "Stadium" -> VenueManager.getVenueList().add(new Stadium(newID, name, type, capacity, concertCapacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent));
             default -> System.out.println("Error: Invalid venue type.");
         }
     }

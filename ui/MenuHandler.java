@@ -5,10 +5,10 @@ package ui;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import logic.UserManager;
 import models.*;
-import java.time.format.DateTimeFormatter;
 
 public class MenuHandler {
     /** asks whether the main menu needs to be printed again. */
@@ -361,6 +361,8 @@ public class MenuHandler {
                 String name = input.nextLine().trim();
                 System.out.print("Capacity: ");
                 int capacity = Integer.parseInt(input.next());
+                System.out.print("Concert Capacity: ");
+                int concertCapacity = Integer.parseInt(input.next());
                 System.out.print("Cost: ");
                 double cost = Double.parseDouble(input.next());
                 System.out.print("VIP %: ");
@@ -376,7 +378,7 @@ public class MenuHandler {
                 System.out.print("Reserved Extra %: ");
                 int reservedExtraPercent = Integer.parseInt(input.next());
 
-                admin.addVenue(venueType, name, capacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent);
+                admin.addVenue(venueType, name, capacity, concertCapacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent);
                 System.out.println(venueType + " \"" + name + "\" added successfully!");
             }
             case "2" -> {
