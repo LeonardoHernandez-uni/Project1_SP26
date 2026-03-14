@@ -20,7 +20,10 @@ public class MenuHandler {
     /** Accepts input from the user in the terminal */
     private static final Scanner input = new Scanner(System.in);
 
-    /** Prints the main menu and listens to user input via the terminal. From the main menu, users can register, login, or exit. When the program exits, a call is made to all the type managers to save 
+    /**
+     * Prints the main menu and listens to user input via the terminal. From the
+     * main menu, users can register, login, or exit. When the program exits, a call
+     * is made to all the type managers to save
      * the contents of their respective ArrayList to a csv file.
      */
     public static void mainMenu() {
@@ -53,9 +56,12 @@ public class MenuHandler {
     }
 
     /**
-     * Prints register menu options and listens to user input via Scanner input in the main method. 
-     * By inputting a series of options, the gui can be used to create a Customer or an Organizer user object with 
-     * the given attributes, after which said user object will be stored to userList.
+     * Prints register menu options and listens to user input via Scanner input in
+     * the main method.
+     * By inputting a series of options, the gui can be used to create a Customer or
+     * an Organizer user object with
+     * the given attributes, after which said user object will be stored to
+     * userList.
      * 
      */
     public static void registerMenu() {
@@ -93,7 +99,8 @@ public class MenuHandler {
                     UserManager.getUserList().add(customer);
 
                     System.out.println("Registration successful!");
-                    RunTicketMiner.logAction(firstName + lastName + "(ID: " + id + ") created a Customer account successfully");
+                    RunTicketMiner.logAction(
+                            firstName + lastName + "(ID: " + id + ") created a Customer account successfully");
                     goBack = true;
                 }
                 case "o", "O" -> {
@@ -112,7 +119,8 @@ public class MenuHandler {
                     UserManager.getUserList().add(organizer);
 
                     System.out.println("Registration successful!");
-                    RunTicketMiner.logAction(firstName + lastName + "(ID: " + id + ") created an Organizer account successfully");
+                    RunTicketMiner.logAction(
+                            firstName + lastName + "(ID: " + id + ") created an Organizer account successfully");
                     goBack = true;
                 }
                 case "b", "B" -> goBack = true;
@@ -124,7 +132,8 @@ public class MenuHandler {
 
     /**
      * Prints the user login menu, prompts user for their login details, then
-     * verifies them by checking if they exist in userList. If they do not, access is denied to the user 
+     * verifies them by checking if they exist in userList. If they do not, access
+     * is denied to the user
      * and the program will go back to the main menu.
      * 
      * @param userList List of users as retrieved by loadUsers() in UserManager
@@ -145,7 +154,8 @@ public class MenuHandler {
         for (User user : userList) {
             if (user.getUsername().equals(usernameInput) && user.getPassword().equals(passwordInput)) {
                 System.out.println("\nLogin Successful! Welcome, " + user.getFirstName() + " " + user.getLastName());
-                RunTicketMiner.logAction(user.getUserType() + " " + user.getFirstName() + " " + user.getLastName() + " successfully logged into their account.");
+                RunTicketMiner.logAction(user.getUserType() + " " + user.getFirstName() + " " + user.getLastName()
+                        + " successfully logged into their account.");
 
                 if (user instanceof Customer customer) {
                     currentUser = customer;
@@ -171,9 +181,13 @@ public class MenuHandler {
         }
     }
 
-    /** Prints a gui and listens to user input to manage users by performing methods located within the Admin User object 
-     * class. The method takes a User Admin called admin in order to access these methods and edit various 
+    /**
+     * Prints a gui and listens to user input to manage users by performing methods
+     * located within the Admin User object
+     * class. The method takes a User Admin called admin in order to access these
+     * methods and edit various
      * entries in the userList ArrayList.
+     * 
      * @param admin The Admin User object logged in and performing edits to.
      */
     private static void manageUsers(Admin admin) {
@@ -184,21 +198,22 @@ public class MenuHandler {
                 String userType = "Undecided";
                 System.out.println("User Type:\n1. Customer\n2. Organizer\n3. Admin");
                 do {
-                switch(input.next()) {
-                    case "1" -> {
-                        userType = "Customer";
+                    switch (input.next()) {
+                        case "1" -> {
+                            userType = "Customer";
+                        }
+                        case "2" -> {
+                            userType = "Organizer";
+                        }
+                        case "3" -> {
+                            userType = "Admin";
+                        }
+                        default -> {
+                            System.out.println("Error: Invalid input");
+                        }
                     }
-                    case "2" -> {
-                        userType = "Organizer";
-                    }
-                    case "3" -> {
-                        userType = "Admin";
-                    }
-                    default -> {
-                        System.out.println("Error: Invalid input");
-                    }
-                } }while(userType.equals("Undecided"));
-                
+                } while (userType.equals("Undecided"));
+
                 System.out.println("First Name: ");
                 String firstName = input.next();
                 System.out.println("Last Name: ");
@@ -208,8 +223,9 @@ public class MenuHandler {
                 System.out.println("Password: ");
                 String password = input.next();
                 int userID = 0;
-                System.out.println("Would you like us to generate a unique ID?\t1. Yes\t2. No (You will be prompted to input a unique ID)");
-                switch(input.next()) {
+                System.out.println(
+                        "Would you like us to generate a unique ID?\t1. Yes\t2. No (You will be prompted to input a unique ID)");
+                switch (input.next()) {
                     case "1" -> {
                         userID = UserManager.generateID();
                     }
@@ -217,10 +233,13 @@ public class MenuHandler {
                         System.out.println("Please input a unique ID:");
                         do {
                             try {
-                            userID = Integer.parseInt(input.next());
-                            if (UserManager.isIDUnique(userID) == false) {System.out.println("The ID you entered isn't unique, please try again.");}
+                                userID = Integer.parseInt(input.next());
+                                if (UserManager.isIDUnique(userID) == false) {
+                                    System.out.println("The ID you entered isn't unique, please try again.");
+                                }
                             } catch (java.lang.NumberFormatException e) {
-                                System.out.println("Error: Invalid Input (Please enter a whole number, preferrably one with no more than four digits)");
+                                System.out.println(
+                                        "Error: Invalid Input (Please enter a whole number, preferrably one with no more than four digits)");
                                 userID = 0;
                             }
                         } while (UserManager.isIDUnique(userID) == false);
@@ -231,54 +250,63 @@ public class MenuHandler {
                 }
                 double moneyAvailable = 0;
                 boolean hasMembership = false;
-                boolean moveOn = false; // Keeps track of whether we can move on from a menu (get out of a repeating menu's loop)
+                boolean moveOn = false; // Keeps track of whether we can move on from a menu (get out of a repeating
+                                        // menu's loop)
                 if (userType.equals("Customer")) {
                     System.out.println("Money Avaliable: ");
                     moneyAvailable = Double.parseDouble(input.next());
                     System.out.println("Does this member have a membership?:\t1. Yes\t2. No");
                     do {
-                        
+
                         switch (input.next()) {
-                        case "1" -> {
-                            hasMembership = true;
-                            moveOn = true;
+                            case "1" -> {
+                                hasMembership = true;
+                                moveOn = true;
+                            }
+                            case "2" -> {
+                                hasMembership = false;
+                                moveOn = true;
+                            }
+                            default -> {
+                                System.out.println("Error: Invalid input");
+                            }
                         }
-                        case "2" -> {
-                            hasMembership = false;
-                            moveOn = true;
-                        }
-                        default -> {
-                            System.out.println("Error: Invalid input");
-                        }
-                    }
-                    }while(!moveOn);
-                    
+                    } while (!moveOn);
+
                 }
-                admin.addMember(userType, firstName, lastName, userName, password, userID, moneyAvailable, hasMembership, new ArrayList<>());
+                admin.addMember(userType, firstName, lastName, userName, password, userID, moneyAvailable,
+                        hasMembership, new ArrayList<>());
                 System.out.println(userType + " " + firstName + " " + lastName + " has been created successfully!");
-                RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " created a new " + userType + "(ID: " + userID + ").");
+                RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " created a new "
+                        + userType + "(ID: " + userID + ").");
             }
             case "2" -> {
                 System.out.println("\n[View/Search Users]\n1. Display All Users \n2. Search for a Member");
                 switch (input.next()) {
                     case "1" -> {
                         admin.displayAllMembers();
-                        RunTicketMiner.logAction(currentUser.getUserType() + " printed all members to the console.");
+                        RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
+                                + " printed all members to the console");
                     }
                     case "2" -> {
                         System.out.print("Enter ID, Name, or Username to search: ");
                         User u = admin.searchMember(input.next());
                         if (u != null) {
-                            System.out.println("User found! ID: " + u.getUserID() + "\tName: " + u.getFirstName() + " " + u.getLastName() + "\tUsername: "
+                            System.out.println("User found! ID: " + u.getUserID() + "\tName: " + u.getFirstName() + " "
+                                    + u.getLastName() + "\tUsername: "
                                     + u.getUsername() + "\tPassword: " + u.getPassword());
                             System.out.print("User Type: " + u.getUserType());
                             if (u instanceof Customer customer) {
-                                System.out.println("\tMoneyAvaliable: " + customer.getMoneyAvailable() + "\tHas Membership: " + customer.getHasMembership() + "\tTickets Purchased: " + customer.getAmountOfTicketsPurchased());
+                                System.out.println("\tMoneyAvaliable: " + customer.getMoneyAvailable()
+                                        + "\tHas Membership: " + customer.getHasMembership() + "\tTickets Purchased: "
+                                        + customer.getAmountOfTicketsPurchased());
                             }
-                            RunTicketMiner.logAction(currentUser.getUserType() + " searched and found information for user " + u.getUserID);
+                            RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
+                                    + " searched and found information for user " + u.getUserID());
                         } else {
                             System.out.println("User not found.");
-                            RunTicketMiner.logAction(currentUser.getUserType() + " attempted to search for a user but didn't find them.");
+                            RunTicketMiner.logAction(currentUser.getUserType() + currentUser.getUserID()
+                                    + " attempted to search for a user but didn't find them");
                         }
                     }
                     default -> {
@@ -291,7 +319,8 @@ public class MenuHandler {
                 System.out.print("Enter ID, Name, or Username to update: ");
                 User u = admin.searchMember(input.next());
                 if (u != null) {
-                    System.out.println("What would you like to update?\n1. Change Name\n2. Change Username\n3. Change Password");
+                    System.out.println(
+                            "What would you like to update?\n1. Change Name\n2. Change Username\n3. Change Password");
                     switch (input.next()) {
                         case "1" -> {
                             System.out.print("New First Name: ");
@@ -300,7 +329,8 @@ public class MenuHandler {
                             String newLastName = input.next();
                             admin.updateUserName(u, newFirstName, newLastName);
                             System.out.println("Name updated successfully!");
-                            RunTicketMiner.actionLog(currentUser.getUserType() + " " + currentUser.get)
+                            RunTicketMiner.logAction(currentUser.getUserType() + currentUser.getUserID() + " updated "
+                                    + u.getUserID() + "'s first and last name");
                         }
                         case "2" -> {
                             boolean usernameUpdated = false;
@@ -309,9 +339,14 @@ public class MenuHandler {
                                 String newUsername = input.next();
                                 if (admin.updateUsername(u, newUsername)) {
                                     System.out.println("Username updated successfully!");
+                                    RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
+                                            + " updated " + u.getUserID() + "'s username");
                                     usernameUpdated = true;
                                 } else {
                                     System.out.println("Error: Username already taken, please try a different one.");
+                                    RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
+                                            + " attempted to update " + u.getUserID()
+                                            + "'s username but was unsuccessful");
                                 }
                             }
                         }
@@ -319,6 +354,8 @@ public class MenuHandler {
                             System.out.print("New Password: ");
                             admin.updateUserPassword(u, input.next());
                             System.out.println("Password updated successfully!");
+                            RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
+                                    + " updated " + u.getUserID() + "'s password");
                         }
                         default -> System.out.println("Error: Invalid input.");
                     }
@@ -331,19 +368,27 @@ public class MenuHandler {
                 User u = admin.searchMember(input.next());
                 if (u != null) {
                     System.out.print("Are you sure you want to delete " + u.getFirstName() + "? (y/n): ");
-                    if (input.next().equalsIgnoreCase("y"))
+                    if (input.next().equalsIgnoreCase("y")) {
+                        RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
+                                + " deleted user " + u.getUserID());
                         admin.deleteUser(u);
-                } else {
-                    System.out.println("User not found.");
+                    } else {
+                        System.out.println("User not found.");
+                    }
                 }
             }
         }
     }
 
-    /** Prints a gui and listens to user input to manage venues by performing methods located within the Admin User object 
-     * class. The method takes a User Admin called admin in order to access these methods and edit various 
+    /**
+     * Prints a gui and listens to user input to manage venues by performing methods
+     * located within the Admin User object
+     * class. The method takes a User Admin called admin in order to access these
+     * methods and edit various
      * entries in the venueList ArrayList.
-     * @param admin The Admin User object logged in and performing edits to the venueList.
+     * 
+     * @param admin The Admin User object logged in and performing edits to the
+     *              venueList.
      */
     private static void manageVenues(Admin admin) {
         System.out.println("\n[Manage Venues]\n1. Add Venue\n2. View/Search\n3. Update\n4. Delete\n5. Back");
@@ -386,24 +431,35 @@ public class MenuHandler {
                 System.out.print("Reserved Extra %: ");
                 int reservedExtraPercent = Integer.parseInt(input.next());
 
-                admin.addVenue(venueType, name, capacity, concertCapacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent);
+                admin.addVenue(venueType, name, capacity, concertCapacity, cost, vipPercent, goldPercent, silverPercent,
+                        bronzePercent, generalAdmissionPercent, reservedExtraPercent);
                 System.out.println(venueType + " \"" + name + "\" added successfully!");
+                RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
+                        + " created a new venue (Name: " + name + ")");
             }
             case "2" -> {
                 System.out.println("\n[View/Search Venues]\n1. Display All Venues\n2. Search for a Venue");
                 switch (input.next()) {
-                    case "1" -> admin.displayAllVenues();
+                    case "1" -> {
+                        admin.displayAllVenues();
+                        RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
+                                + " printed all venues to console");
+                    }
                     case "2" -> {
                         System.out.print("Enter Venue ID, Name, or Type to search: ");
                         Venue v = admin.searchVenue(input.next());
-                        if (v != null)
+                        if (v != null) {
                             System.out.println(v);
-                        else
+                            RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
+                                    + " searched and got " + v.getType() + " " + v.getId());
+                        } else {
                             System.out.println("Venue not found.");
+                        }
                     }
                     default -> System.out.println("Error: Invalid input.");
                 }
             }
+
             case "3" -> {
                 System.out.print("Enter Venue ID, Name, or Type to update: ");
                 Venue v = admin.searchVenue(input.next());
@@ -413,19 +469,23 @@ public class MenuHandler {
                         case "1" -> {
                             System.out.print("New Name: ");
                             String newName = input.nextLine().trim();
-                            if (newName.isEmpty()) newName = input.nextLine().trim();
+                            if (newName.isEmpty())
+                                newName = input.nextLine().trim();
                             admin.updateVenueName(v, newName);
                             System.out.println("Venue name updated successfully!");
+                            RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " updated the name of venue " + v.getId());
                         }
                         case "2" -> {
                             System.out.print("New Cost: ");
                             admin.updateVenueCost(v, Double.parseDouble(input.next()));
                             System.out.println("Venue cost updated successfully!");
+                            RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " updated the cost of venue " + v.getId());
                         }
                         case "3" -> {
                             System.out.print("New Capacity: ");
                             admin.updateVenueCapacity(v, Integer.parseInt(input.next()));
                             System.out.println("Venue capacity updated successfully!");
+                            RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " updated the capacity of venue " + v.getId());
                         }
                         default -> System.out.println("Error: Invalid input.");
                     }
@@ -438,21 +498,30 @@ public class MenuHandler {
                 Venue v = admin.searchVenue(input.next());
                 if (v != null) {
                     System.out.print("Confirm deletion of " + v.getName() + "? (y/n): ");
-                    if (input.next().equalsIgnoreCase("y"))
+                    if (input.next().equalsIgnoreCase("y")) {
+                        RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " deleted venue " + v.getId());
                         admin.deleteVenue(v);
+                    }
                 } else {
                     System.out.println("Venue not found.");
                 }
             }
-            case "5" -> { /* Back */ }
+            case "5" -> {
+                /* Back */ }
             default -> System.out.println("Error: Invalid input.");
         }
     }
 
-    /** Prints a gui and listens to user input to manage events by performing methods located within the Admin User object 
-     * class. The method takes a User Admin called admin in order to access these methods and edit various 
+    /**
+     * Prints a gui and listens to user input to manage events by performing methods
+     * located within the Admin User object
+     * class. The method takes a User Admin called admin in order to access these
+     * methods and edit various
      * entries in the eventList ArrayList.
-     * @param admin The Admin User object logged in and performing edits to the eventList. */
+     * 
+     * @param admin The Admin User object logged in and performing edits to the
+     *              eventList.
+     */
     private static void manageEvents(Admin admin) {
         System.out.println("\n[Manage Events]\n1. Add Event\n2. View/Search\n3. Update\n4. Delete\n5. Back");
         System.out.print(">> ");
@@ -478,7 +547,8 @@ public class MenuHandler {
                 LocalDate date = LocalDate.parse(input.next());
                 System.out.print("Time (e.g. 7:30 PM): ");
                 input.nextLine();
-                LocalTime time = LocalTime.parse(input.nextLine().trim().toUpperCase(), DateTimeFormatter.ofPattern("h:mm a"));
+                LocalTime time = LocalTime.parse(input.nextLine().trim().toUpperCase(),
+                        DateTimeFormatter.ofPattern("h:mm a"));
                 System.out.print("VIP Price: ");
                 double vipPrice = Double.parseDouble(input.next());
                 System.out.print("Gold Price: ");
@@ -490,18 +560,25 @@ public class MenuHandler {
                 System.out.print("General Admission Price: ");
                 double generalAdmissionPrice = Double.parseDouble(input.next());
 
-                admin.addEvent(eventType, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice, generalAdmissionPrice);
+                admin.addEvent(eventType, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice,
+                        generalAdmissionPrice);
                 System.out.println(eventType + " \"" + name + "\" added successfully!");
+                RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " created a new venue (Name: " + name);
             }
             case "2" -> {
                 System.out.println("\n[View/Search Events]\n1. Display All Events\n2. Search for an Event");
                 switch (input.next()) {
-                    case "1" -> admin.displayAllEvents();
+                    case "1" -> {
+                        admin.displayAllEvents();
+                        RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " printed all events to console.");
+                    }
                     case "2" -> {
                         System.out.print("Enter Event ID, Name, or Date (YYYY-MM-DD): ");
                         Event e = admin.searchEvent(input.next());
-                        if (e != null)
+                        if (e != null) {
                             System.out.println(e);
+                            RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " searched and found event " + e.getId());
+                        }
                         else
                             System.out.println("Event not found.");
                     }
@@ -517,18 +594,22 @@ public class MenuHandler {
                         case "1" -> {
                             System.out.print("New Name: ");
                             String newName = input.nextLine().trim();
-                            if (newName.isEmpty()) newName = input.nextLine().trim();
+                            if (newName.isEmpty())
+                                newName = input.nextLine().trim();
                             admin.updateEventName(e, newName);
                             System.out.println("Event name updated successfully!");
+                            RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " updated the name of event " + e.getId());
                         }
                         case "2" -> {
                             System.out.print("New Date (YYYY-MM-DD): ");
                             LocalDate newDate = LocalDate.parse(input.next());
                             System.out.print("New Time (e.g. 7:30 PM): ");
                             input.nextLine();
-                            LocalTime newTime = LocalTime.parse(input.nextLine().trim().toUpperCase(), DateTimeFormatter.ofPattern("h:mm a"));
+                            LocalTime newTime = LocalTime.parse(input.nextLine().trim().toUpperCase(),
+                                    DateTimeFormatter.ofPattern("h:mm a"));
                             admin.updateEventDateTime(e, newDate, newTime);
                             System.out.println("Event date and time updated successfully!");
+                            RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " updated the date and time of event " + e.getId());
                         }
                         default -> System.out.println("Error: Invalid input.");
                     }
@@ -541,21 +622,29 @@ public class MenuHandler {
                 Event e = admin.searchEvent(input.next());
                 if (e != null) {
                     System.out.print("Confirm cancellation of " + e.getName() + "? (y/n): ");
-                    if (input.next().equalsIgnoreCase("y"))
+                    if (input.next().equalsIgnoreCase("y")) {
+                        RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " deleted event " + e.getId());
                         admin.deleteEvent(e);
+                    }
                 } else {
                     System.out.println("Event not found.");
                 }
             }
-            case "5" -> { /* Back */ }
+            case "5" -> {
+                /* Back */ }
             default -> System.out.println("Error: Invalid input.");
         }
     }
 
-    /** Prints a gui providing Admin User objects the choice to modify userList, venueList, or eventList entries. 
-     * Each choice sends the admin to a menu of options for adding, viewing, updating, and deleting entries in each 
+    /**
+     * Prints a gui providing Admin User objects the choice to modify userList,
+     * venueList, or eventList entries.
+     * Each choice sends the admin to a menu of options for adding, viewing,
+     * updating, and deleting entries in each
      * respective ArrayList.
-     * @param admin The Admin User object logged in and performing edits to the selected object type.
+     * 
+     * @param admin The Admin User object logged in and performing edits to the
+     *              selected object type.
      */
     public static void adminMenu(Admin admin) {
         boolean logout = false;
