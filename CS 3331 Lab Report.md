@@ -105,6 +105,6 @@ Most operations run at O(n) complexity: login and search use linear searches thr
 Rewrites to Make Code Acceptable:
 We rewrote and improved the code as much as possible before the due date.
 
-
-
-(Note: Turn in all source code, output results (if applicable), reports, and all other required material specified by the assignment). Save this lab report at Team\#\_PA\## – Do not turn in report with notes.)
+## Why We Submitted Late
+We submitted late because I (Leonardo) believe we underestimated how much work this project would be and didn't manage our time quite well as a result. On top of managing work for other classes, we had this to do and ended up a little low priority. 
+I also believe our misunderstanding of how a Github repository works was also the blame for earlier parts of our project. Under the belief code would be overwritten if we worked on it at the same time, Kevin and I worked on the code a piece at a time each. It was only as we were finishing up that we realized how merging different versions worked, and how exactly Git was keeping track of all our changes. With the experience of this lab hanging over our heads, I believe our next lab should be submitted on or before the due date. With that being said however, our apologies for our lateness.
