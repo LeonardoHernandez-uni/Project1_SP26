@@ -1,3 +1,7 @@
+/**
+ * Manages the list of events
+ * Handles loading event data from CSV files and provides access to the event list
+ */
 package logic;
 
 import java.io.BufferedReader;

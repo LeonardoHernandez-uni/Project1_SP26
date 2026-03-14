@@ -1,3 +1,7 @@
+/**
+ * Manages the list of venues
+ * Handles loading venue data from CSV files and provides access to the venue list
+ */
 package logic;
 
 import java.io.*;

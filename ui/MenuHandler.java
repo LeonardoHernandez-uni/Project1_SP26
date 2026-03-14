@@ -1,8 +1,14 @@
+/**
+ * Manages the user interface and provides methods for displaying menus, handling user input, and navigating through different options. The class interacts with the UserManager to manage user accounts and with the Admin class to allow administrators to manage users, venues, and events
+ */
 package ui;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import logic.UserManager;
 import models.*;
+import java.time.format.DateTimeFormatter;
 
 public class MenuHandler {
     /** asks whether the main menu needs to be printed again. */
@@ -274,6 +280,44 @@ public class MenuHandler {
                 }
 
             }
+            case "3" -> {
+                System.out.print("Enter ID, Name, or Username to update: ");
+                User u = admin.searchMember(input.next());
+                if (u != null) {
+                    System.out.println("What would you like to update?\n1. Change Name\n2. Change Username\n3. Change Password");
+                    switch (input.next()) {
+                        case "1" -> {
+                            System.out.print("New First Name: ");
+                            String newFirstName = input.next();
+                            System.out.print("New Last Name: ");
+                            String newLastName = input.next();
+                            admin.updateUserName(u, newFirstName, newLastName);
+                            System.out.println("Name updated successfully!");
+                        }
+                        case "2" -> {
+                            boolean usernameUpdated = false;
+                            while (!usernameUpdated) {
+                                System.out.print("New Username: ");
+                                String newUsername = input.next();
+                                if (admin.updateUsername(u, newUsername)) {
+                                    System.out.println("Username updated successfully!");
+                                    usernameUpdated = true;
+                                } else {
+                                    System.out.println("Error: Username already taken, please try a different one.");
+                                }
+                            }
+                        }
+                        case "3" -> {
+                            System.out.print("New Password: ");
+                            admin.updateUserPassword(u, input.next());
+                            System.out.println("Password updated successfully!");
+                        }
+                        default -> System.out.println("Error: Invalid input.");
+                    }
+                } else {
+                    System.out.println("User not found.");
+                }
+            }
             case "4" -> {
                 System.out.print("Enter ID, Name, or Username to DELETE: ");
                 User u = admin.searchMember(input.next());
@@ -281,6 +325,8 @@ public class MenuHandler {
                     System.out.print("Are you sure you want to delete " + u.getFirstName() + "? (y/n): ");
                     if (input.next().equalsIgnoreCase("y"))
                         admin.deleteUser(u);
+                } else {
+                    System.out.println("User not found.");
                 }
             }
         }
@@ -295,13 +341,87 @@ public class MenuHandler {
         System.out.println("\n[Manage Venues]\n1. Add Venue\n2. View/Search\n3. Update\n4. Delete\n5. Back");
         System.out.print(">> ");
         switch (input.next()) {
+            // manageVenues case "1"
+            case "1" -> {
+                System.out.println("Venue Type:\n1. Arena\n2. Auditorium\n3. OpenAir\n4. Stadium");
+                String venueType = "Undecided";
+                do {
+                    System.out.print(">> ");
+                    switch (input.next()) {
+                        case "1" -> venueType = "Arena";
+                        case "2" -> venueType = "Auditorium";
+                        case "3" -> venueType = "OpenAir";
+                        case "4" -> venueType = "Stadium";
+                        default -> System.out.println("Error: Invalid input.");
+                    }
+                } while (venueType.equals("Undecided"));
+
+                System.out.print("Name: ");
+                input.nextLine();
+                String name = input.nextLine().trim();
+                System.out.print("Capacity: ");
+                int capacity = Integer.parseInt(input.next());
+                System.out.print("Cost: ");
+                double cost = Double.parseDouble(input.next());
+                System.out.print("VIP %: ");
+                double vipPercent = Double.parseDouble(input.next());
+                System.out.print("Gold %: ");
+                int goldPercent = Integer.parseInt(input.next());
+                System.out.print("Silver %: ");
+                int silverPercent = Integer.parseInt(input.next());
+                System.out.print("Bronze %: ");
+                int bronzePercent = Integer.parseInt(input.next());
+                System.out.print("General Admission %: ");
+                int generalAdmissionPercent = Integer.parseInt(input.next());
+                System.out.print("Reserved Extra %: ");
+                int reservedExtraPercent = Integer.parseInt(input.next());
+
+                admin.addVenue(venueType, name, capacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent);
+                System.out.println(venueType + " \"" + name + "\" added successfully!");
+            }
             case "2" -> {
-                System.out.print("Enter Venue ID, Name, or Type to search: ");
+                System.out.println("\n[View/Search Venues]\n1. Display All Venues\n2. Search for a Venue");
+                switch (input.next()) {
+                    case "1" -> admin.displayAllVenues();
+                    case "2" -> {
+                        System.out.print("Enter Venue ID, Name, or Type to search: ");
+                        Venue v = admin.searchVenue(input.next());
+                        if (v != null)
+                            System.out.println(v);
+                        else
+                            System.out.println("Venue not found.");
+                    }
+                    default -> System.out.println("Error: Invalid input.");
+                }
+            }
+            case "3" -> {
+                System.out.print("Enter Venue ID, Name, or Type to update: ");
                 Venue v = admin.searchVenue(input.next());
-                if (v != null)
-                    System.out.println(v);
-                else
+                if (v != null) {
+                    System.out.println("What would you like to update?\n1. Name\n2. Cost\n3. Capacity");
+                    switch (input.next()) {
+                        case "1" -> {
+                            System.out.print("New Name: ");
+                            String newName = input.nextLine().trim();
+                            if (newName.isEmpty()) newName = input.nextLine().trim();
+                            admin.updateVenueName(v, newName);
+                            System.out.println("Venue name updated successfully!");
+                        }
+                        case "2" -> {
+                            System.out.print("New Cost: ");
+                            admin.updateVenueCost(v, Double.parseDouble(input.next()));
+                            System.out.println("Venue cost updated successfully!");
+                        }
+                        case "3" -> {
+                            System.out.print("New Capacity: ");
+                            admin.updateVenueCapacity(v, Integer.parseInt(input.next()));
+                            System.out.println("Venue capacity updated successfully!");
+                        }
+                        default -> System.out.println("Error: Invalid input.");
+                    }
+                } else {
                     System.out.println("Venue not found.");
+                }
             }
             case "4" -> {
                 System.out.print("Enter Venue ID or Name to DELETE: ");
@@ -310,8 +430,12 @@ public class MenuHandler {
                     System.out.print("Confirm deletion of " + v.getName() + "? (y/n): ");
                     if (input.next().equalsIgnoreCase("y"))
                         admin.deleteVenue(v);
+                } else {
+                    System.out.println("Venue not found.");
                 }
             }
+            case "5" -> { /* Back */ }
+            default -> System.out.println("Error: Invalid input.");
         }
     }
 
@@ -323,13 +447,84 @@ public class MenuHandler {
         System.out.println("\n[Manage Events]\n1. Add Event\n2. View/Search\n3. Update\n4. Delete\n5. Back");
         System.out.print(">> ");
         switch (input.next()) {
+            // manageEvents case "1"
+            case "1" -> {
+                System.out.println("Event Type:\n1. Concert\n2. Special\n3. Sport");
+                String eventType = "Undecided";
+                do {
+                    System.out.print(">> ");
+                    switch (input.next()) {
+                        case "1" -> eventType = "Concert";
+                        case "2" -> eventType = "Special";
+                        case "3" -> eventType = "Sport";
+                        default -> System.out.println("Error: Invalid input.");
+                    }
+                } while (eventType.equals("Undecided"));
+
+                System.out.print("Name: ");
+                input.nextLine();
+                String name = input.nextLine().trim();
+                System.out.print("Date (YYYY-MM-DD): ");
+                LocalDate date = LocalDate.parse(input.next());
+                System.out.print("Time (e.g. 7:30 PM): ");
+                input.nextLine();
+                LocalTime time = LocalTime.parse(input.nextLine().trim().toUpperCase(), DateTimeFormatter.ofPattern("h:mm a"));
+                System.out.print("VIP Price: ");
+                double vipPrice = Double.parseDouble(input.next());
+                System.out.print("Gold Price: ");
+                double goldPrice = Double.parseDouble(input.next());
+                System.out.print("Silver Price: ");
+                double silverPrice = Double.parseDouble(input.next());
+                System.out.print("Bronze Price: ");
+                double bronzePrice = Double.parseDouble(input.next());
+                System.out.print("General Admission Price: ");
+                double generalAdmissionPrice = Double.parseDouble(input.next());
+
+                admin.addEvent(eventType, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice, generalAdmissionPrice);
+                System.out.println(eventType + " \"" + name + "\" added successfully!");
+            }
             case "2" -> {
-                System.out.print("Enter Event ID, Name, or Date (YYYY-MM-DD): ");
+                System.out.println("\n[View/Search Events]\n1. Display All Events\n2. Search for an Event");
+                switch (input.next()) {
+                    case "1" -> admin.displayAllEvents();
+                    case "2" -> {
+                        System.out.print("Enter Event ID, Name, or Date (YYYY-MM-DD): ");
+                        Event e = admin.searchEvent(input.next());
+                        if (e != null)
+                            System.out.println(e);
+                        else
+                            System.out.println("Event not found.");
+                    }
+                    default -> System.out.println("Error: Invalid input.");
+                }
+            }
+            case "3" -> {
+                System.out.print("Enter Event ID, Name, or Date to update: ");
                 Event e = admin.searchEvent(input.next());
-                if (e != null)
-                    System.out.println(e);
-                else
+                if (e != null) {
+                    System.out.println("What would you like to update?\n1. Name\n2. Date & Time");
+                    switch (input.next()) {
+                        case "1" -> {
+                            System.out.print("New Name: ");
+                            String newName = input.nextLine().trim();
+                            if (newName.isEmpty()) newName = input.nextLine().trim();
+                            admin.updateEventName(e, newName);
+                            System.out.println("Event name updated successfully!");
+                        }
+                        case "2" -> {
+                            System.out.print("New Date (YYYY-MM-DD): ");
+                            LocalDate newDate = LocalDate.parse(input.next());
+                            System.out.print("New Time (e.g. 7:30 PM): ");
+                            input.nextLine();
+                            LocalTime newTime = LocalTime.parse(input.nextLine().trim().toUpperCase(), DateTimeFormatter.ofPattern("h:mm a"));
+                            admin.updateEventDateTime(e, newDate, newTime);
+                            System.out.println("Event date and time updated successfully!");
+                        }
+                        default -> System.out.println("Error: Invalid input.");
+                    }
+                } else {
                     System.out.println("Event not found.");
+                }
             }
             case "4" -> {
                 System.out.print("Enter Event ID or Name to DELETE: ");
@@ -338,8 +533,12 @@ public class MenuHandler {
                     System.out.print("Confirm cancellation of " + e.getName() + "? (y/n): ");
                     if (input.next().equalsIgnoreCase("y"))
                         admin.deleteEvent(e);
+                } else {
+                    System.out.println("Event not found.");
                 }
             }
+            case "5" -> { /* Back */ }
+            default -> System.out.println("Error: Invalid input.");
         }
     }
 
