@@ -37,37 +37,73 @@ It took us two weeks to finish this project, and we still didn't make it to due 
 
 ## Solution Design
 
-What did you do in this program?
+1. What did you do in this program?
+Our program implements a ticket management system with three primary entity types: Users (Customers, Organizers, and Admins), Events (Concerts, Sports, and Special events), and Venues (Arenas, Stadiums, Auditoriums, and OpenAir venues). The system allows users to login, organizers to manage events, and administrators to oversee the entire system at this current moment.
+  
+2. What was your approach to solving this problem?
+Our approach to solving this problem was to use object-oriented design principles, particularly inheritance and abstraction. We created abstract base classes (User, Event, Venue) that define common attributes and behaviors, then extended them with specific subclasses that implement unique features. For instance, the Customer class extends User and adds fields like moneyAvailable and hasMembership, while the Admin class extends User and includes methods for managing all system entities.
 
-What was your approach to solving this problem?
+3. What data structures did you use? Why?
+The primary data structure we used is ArrayList, which stores collections of Users, Events, and Venues. We chose ArrayLists because they provide dynamic sizing and easy iteration. Each entity type has its own ArrayList managed by dedicated manager classes (UserManager, EventManager, VenueManager). These manager classes were used to manipulate the data and provide methods like generateID(), searchMember(), and loadData().
 
-What data structures did you use? Why?
-
-What assumptions, if any, did you make?
+4. What assumptions, if any, did you make?
+We assumed that venue capacity percentages (VIP, Gold, Silver, Bronze, General Admission) should total 100%, though we did not enforce this. Second, we assumed that CSV files would follow a consistent format with specific column orders. Finally, we assumed that the system would run on a single machine without concurrent access, so we did not implement safety or database transactions.
 
 ## Testing
 
-How did you test the program?
+1. How did you test the program?
+We tested the program using a combination of black-box and white-box testing. Black-box testing was used to verify that user-facing features worked as expected from an end-user perspectiv. White-box testing was employed to examine internal logic, such as verifying that ID generation produced unique values.
 
-Did you use black-box, white-box testing, or both? Why?
+2. Did you use black-box, white-box testing, or both? Why?
+We primarily used manual testing through the terminal user interface, entering various inputs to observe system behavior. For example, we tested input validation by entering non-numeric values where numbers were expected (which gave the NumberFormatException bug in the manageEvents method).
 
-Did you test the solution enough? How can the testing practices be improved?
+3. Did you test the solution enough? How can the testing practices be improved?
+We did not test the solution enough. Our testing was primarily manual, conducted through the terminal. We discovered critical bugs like the NumberFormatException. Testing practices could be improved by implementing automated unit tests using JUnit to test individual methods, creating a comprehensive test with documented test cases covering both valid and invalid inputs, performing edge testing systematically, and establishing regression testing to ensure bug fixes don't break existing functionality. Additionally, we should test edge cases more thoroughly, such as empty CSV files, and special characters in input fields.
 
-What are the test cases I used?
+5. What are the test cases I used?
+1. User Registration: Creating customer and organizer accounts with various input combinations, including edge cases like empty passwords and special characters in usernames.
+2. Login Validation: Testing correct credentials, incorrect passwords, non-existent usernames, and case sensitivity.
+3. Admin Operations: Adding, searching, updating, and deleting users, venues, and events through the admin menu. Testing that deletion properly removed entries and that updates persisted correctly.
+4. Input Validation: Entering invalid data types, empty inputs, and boundary values.
+5. Time Parsing: Testing the event time input with various formats like "10:30 PM", "7:00 AM", and invalid formats.
+6. CSV Persistence: Verifying that data saved to CSV files on exit and loaded correctly on restart, maintaining data across sessions.
 
-Did you break the program and use that to improve it?
+5. Did you break the program and use that to improve it?
+Yes, we did break the program during testing, and this proved valuable for improvement. The most significant bug we discovered was the NumberFormatException in the manageEvents() method at line 466. When prompted for time input, if a user entered non-numeric text (like "asdfasdf"), the program crashed because the next line attempted to parse VIP price without first prompting the user. This revealed that we were missing a System.out.print("VIP Price: ") statement before the parseDouble() call. We fixed this by adding the missing prompt and implemented try-catch blocks around numeric parsing to provide better error messages and recovery.
 
 ## Test results
 
-Describe the results of your tests.
-
+1. Describe the results of your tests.
+Our testing revealed both successful functionality and areas requiring improvement. The majority of core features worked as intended, including user registration, login authentication, admin CRUD operations, and CSV data persistence.
 Include any console outputs showing your results.
 
-Include any text document results of your tests.
+2. Include any text document results of your tests.
+Failed Test Result - NumberFormatException:
+When testing event creation in the admin menu, we encountered the following error:
+Time (e.g. 7:30 PM): 10:30 PM asdfasdf Exception in thread "main" java.lang.NumberFormatException: For input string: "asdfasdf"         at java.base/jdk.internal.math.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:2054)         at java.base/jdk.internal.math.FloatingDecimal.parseDouble(FloatingDecimal.java:110)         at java.base/java.lang.Double.parseDouble(Double.java:792)         at ui.MenuHandler.manageEvents(MenuHandler.java:466)
+
+This error occurred because the code at line 466 attempted to parse the VIP price without first displaying a prompt to the user. The user, not knowing what input was expected, entered "asdfasdf", which could not be parsed as a double. The fix was to add System.out.print("VIP Price: "); before the Double.parseDouble() call.
 
 ## Code Review
 
 Explain how you conducted a review of your code. Describe how you checked each part of the code review checklist.
+
+We did a systematic code review using the provided checklist, examining Implementation, Logic, Readability/Style, and Performance.
+
+Implementation:
+The code successfully implements core TicketMiner requirements. Several areas could be simplified, particularly the repetitive CSV parsing logic across manager classes and deeply nested switch statements in MenuHandler. While mostly dynamic, venue and event types are hardcoded strings.
+
+Logic:
+We identified several logic issues: the manageEvents() method crashes with NumberFormatException due to missing input prompts and invalid menu inputs don't re-display options. The code fails when users enter non-numeric input without try-catch protection, invalid time formats, negative values, capacity percentages not summing to 100%, or when CSV files are missing.
+
+Readability/Style:
+Code readability is moderate with descriptive variable names but suffers from deeply nested logic and long methods. The package structure has good separation, but MenuHandler is a everything class that should be split into AdminMenu, CustomerMenu, and OrganizerMenu classes. The code follows Java naming conventions. Javadoc was implemented to increase maintainability and readability
+
+Performance:
+Most operations run at O(n) complexity: login and search use linear searches through ArrayLists, add operations are O(1), delete is O(n), and ID generation is O(n). As data grows, performance degrades linearly.
+
+Rewrites to Make Code Acceptable:
+We rewrote and improved the code as much as possible before the due date.
 
 
 
