@@ -23,3 +23,28 @@ If the actor is a "TicketMiner member" the System applies a 10% discount to the 
 
 ## Exception Flow
 If the Customer has insufficient funds or tickets are sold out, the System displays an error message and returns to the event selection menu.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+# Scenario 2: Generate Event Report
+
+## Actor:
+Organizer
+
+## Preconditions:
+The user is logged in as and Organizer and events exist in the system.
+
+## Main Flow:
+1. The Organizer selects "Generate Event Report" from the menu.
+2. The System prompts the Organizer to enter the Event ID, Name, or Date.
+3. The Organizer enters the search criteria (e.g., Event ID "101").
+4. The System searches the event list for a match.
+5. The System calculates total seats sold per tier and corresponding revenue.
+6. The System calculates the "Expected profit" and "Actual profit".
+7. The System displays the full report on the console.
+
+## Postconditions:
+The system displays the report and returns to the Organizer menu.
+
+## Exception Flow:
+if the event is not found, the System displays an informative message stating the event does not exist and returns to the menu.
