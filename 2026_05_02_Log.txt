@@ -1,0 +1,4 @@
+Admin Angela Carney successfully logged into their account.
+Admin 743 printed all members to the console
+Admin 743 printed all events to console.
+Admin 743 printed all venues to console
