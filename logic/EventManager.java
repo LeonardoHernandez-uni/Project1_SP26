@@ -21,15 +21,35 @@ import models.Special;
 import models.Sport;
 
 public class EventManager {
-    /**
-     * eventList stores all the events in the system as Event objects within an
-     * ArrayList. It is what we load/save data to, and its what we access to modify
-     * event entries.
-     */
-    private static ArrayList<Event> eventList = new ArrayList<>();
 
-    /** Returns eventList. Is used for accessing eventList from other classes. */
-    public static ArrayList<Event> getEventList() {
+    /** The single, private static instance of the class */
+    private static EventManager instance;
+
+    /** eventList stores all the events in the system. */
+    private ArrayList<Event> eventList;
+
+    /** * Private constructor to prevent instantiation from outside the class.
+     * Initializes the eventList.
+     */
+    private EventManager() {
+        eventList = new ArrayList<>();
+    }
+
+    /**
+     * Retrieves the single, shared instance of the EventManager.
+     * @return The Singleton instance of EventManager.
+     */
+    public static EventManager getInstance() {
+        if (instance == null) {
+            instance = new EventManager();
+        }
+        return instance;
+    }
+
+    /** * Returns the list of events.
+     * @return The ArrayList containing all events.
+     */
+    public ArrayList<Event> getEventList() {
         return eventList;
     }
 
@@ -40,8 +60,8 @@ public class EventManager {
      * The method will use the 2nd column of the csv, the type column, to determine
      * whether the event is a Concert, some Special Event, or a Sporting Event.
      */
-    public static void loadData() {
-        String eventFile = "Event_List_PA1.csv";
+    public void loadData() {
+        String eventFile = "Event_List_PA2.csv";
         String line;
         String csvSplitBy = ",";
 
@@ -85,28 +105,15 @@ public class EventManager {
         }
     }
 
-    public static void saveData() {
+    public void saveData() {
 
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy_MM_dd");
 
         try (FileWriter file = new FileWriter(LocalDate.now().format(pattern) + "_Event_List_PA1.csv")) {
-
-            file.write(
-                    "ID,Type,Name,Date,Time,VIP Price,Gold Price,Silver Price,Bronze Price,General Admission Price\n");
+            file.write("ID,Type,Name,Date,Time,VIP Price,Gold Price,Silver Price,Bronze Price,General Admission Price\n");
 
             for (Event event : eventList) {
-                file.write(
-                    event.getId() + "," +
-                    event.getEventType() + "," + 
-                    event.getName() + "," +
-                    event.getDate() + "," +
-                    event.getTime() + "," + 
-                    event.getVipPrice() + "," + 
-                    event.getGoldPrice() + "," + 
-                    event.getSilverPrice() + "," +
-                    event.getBronzePrice() + "," + 
-                    event.getGeneralAdmissionPrice() + "\n"
-            );
+                file.write(event.toCSVString() + "\n");
             }
 
         } catch (IOException e) {
@@ -115,7 +122,7 @@ public class EventManager {
     }
 
     //refactored admin stuff
-    public static void displayAllEvents() {
+    public void displayAllEvents() {
         System.out.println("\n--- All Events ---");
         System.out.printf("%-5s | %-30s | %-10s | %-12s | %-10s%n", "ID", "Name", "Type", "Date", "Time");
         System.out.println("-----------------------------------------------------------------------------");
@@ -138,7 +145,7 @@ public class EventManager {
      * @param bronzePrice The price for a Bronze ticket.
      * @param generalAdmissionPrice The price for a General Admission ticket.
      */
-    public static void addEvent(String type, String name, LocalDate date, LocalTime time, double vipPrice, double goldPrice, double silverPrice, double bronzePrice, double generalAdmissionPrice) {
+    public void addEvent(String type, String name, LocalDate date, LocalTime time, double vipPrice, double goldPrice, double silverPrice, double bronzePrice, double generalAdmissionPrice) {
         int newID = eventList.stream().mapToInt(Event::getId).max().orElse(0) + 1;
         switch (type) {
             case "Concert" -> eventList.add(new Concert(newID, type, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice, generalAdmissionPrice));
@@ -153,7 +160,7 @@ public class EventManager {
      * * @param query The string to search for.
      * @return The matching Event object, or null if no match is found.
      */
-    public static Event searchEvent(String query) {
+    public Event searchEvent(String query) {
         for (Event e : eventList) { 
             if (String.valueOf(e.getId()).equals(query) || e.getName().equalsIgnoreCase(query) || e.getDate().toString().equals(query)) { 
                 return e;
@@ -167,7 +174,7 @@ public class EventManager {
      * * @param e The Event to update.
      * @param newName The new name for the event.
      */
-    public static void updateEventName(Event e, String newName) { e.setName(newName); }
+    public void updateEventName(Event e, String newName) { e.setName(newName); }
     
     /**
      * Updates the date and time of a specific Event.
@@ -175,11 +182,11 @@ public class EventManager {
      * @param newDate The new date for the event.
      * @param newTime The new time for the event.
      */
-    public static void updateEventDateTime(Event e, LocalDate newDate, LocalTime newTime) { e.setDate(newDate); e.setTime(newTime); }
+    public void updateEventDateTime(Event e, LocalDate newDate, LocalTime newTime) { e.setDate(newDate); e.setTime(newTime); }
 
     /**
      * Removes a specific Event from the system.
      * * @param e The Event to delete.
      */
-    public static void deleteEvent(Event e) { eventList.remove(e); }
+    public void deleteEvent(Event e) { eventList.remove(e); }
 }

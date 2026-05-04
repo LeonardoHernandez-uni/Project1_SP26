@@ -38,13 +38,13 @@ public class RunTicketMiner {
      * the user.
      */
     public static void main(String[] args) {
-        UserManager.loadData();
-        VenueManager.loadData();
-        EventManager.loadData();
+        UserManager.getInstance().loadData();
+        VenueManager.getInstance().loadData();
+        EventManager.getInstance().loadData();
         MenuHandler.mainMenu();
-        UserManager.saveData();
-        VenueManager.saveData();
-        EventManager.saveData();
+        UserManager.getInstance().saveData();
+        VenueManager.getInstance().saveData();
+        EventManager.getInstance().saveData();
         printActionLog();
         input.close();
     }

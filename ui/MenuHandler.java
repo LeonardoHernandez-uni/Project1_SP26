@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import exceptions.InsufficientFundsException;
 import logic.EventManager;
 import logic.UserManager;
 import logic.VenueManager;
@@ -48,7 +49,7 @@ public class MenuHandler {
                 }
                 case "l", "L" -> {
                     // Pulling the list from UserManager
-                    loginMenu(UserManager.getUserList());
+                    loginMenu(UserManager.getInstance().getUserList());
                     printMainMenu = true;
                 }
                 case "exit", "Exit" -> System.out.println("Input invalid. Did you mean \"EXIT\"?");
@@ -96,10 +97,10 @@ public class MenuHandler {
                     }
 
                     // Using UserManager to get the ID and add the user
-                    int id = UserManager.generateID();
+                    int id = UserManager.getInstance().generateID();
                     Customer customer = new Customer(firstName, lastName, username, password, id, moneyAvailable,
                             isMembership, new ArrayList<>());
-                    UserManager.getUserList().add(customer);
+                    UserManager.getInstance().getUserList().add(customer);
 
                     System.out.println("Registration successful!");
                     RunTicketMiner.logAction(
@@ -117,9 +118,9 @@ public class MenuHandler {
                     String password = input.next();
 
                     // Using UserManager to get the ID and add the user
-                    int id = UserManager.generateID();
+                    int id = UserManager.getInstance().generateID();
                     Organizer organizer = new Organizer(firstName, lastName, username, password, id);
-                    UserManager.getUserList().add(organizer);
+                    UserManager.getInstance().getUserList().add(organizer);
 
                     System.out.println("Registration successful!");
                     RunTicketMiner.logAction(
@@ -164,6 +165,8 @@ public class MenuHandler {
                     currentUser = customer;
                     System.out.println("Available Funds: $" + customer.getMoneyAvailable());
                     System.out.println("Membership Status: " + (customer.getHasMembership() ? "Active" : "Inactive"));
+                    
+                    customerMenu(customer);
                 }
                 if (user instanceof Organizer organizer) {
                     currentUser = organizer;
@@ -230,14 +233,14 @@ public class MenuHandler {
                         "Would you like us to generate a unique ID?\t1. Yes\t2. No (You will be prompted to input a unique ID)");
                 switch (input.next()) {
                     case "1" -> {
-                        userID = UserManager.generateID();
+                        userID = UserManager.getInstance().generateID();
                     }
                     case "2" -> {
                         System.out.println("Please input a unique ID:");
                         do {
                             try {
                                 userID = Integer.parseInt(input.next());
-                                if (UserManager.isIDUnique(userID) == false) {
+                                if (UserManager.getInstance().isIDUnique(userID) == false) {
                                     System.out.println("The ID you entered isn't unique, please try again.");
                                 }
                             } catch (java.lang.NumberFormatException e) {
@@ -245,7 +248,7 @@ public class MenuHandler {
                                         "Error: Invalid Input (Please enter a whole number, preferrably one with no more than four digits)");
                                 userID = 0;
                             }
-                        } while (UserManager.isIDUnique(userID) == false);
+                        } while (UserManager.getInstance().isIDUnique(userID) == false);
                     }
                     default -> {
                         System.out.println("Error: Invalid input");
@@ -277,7 +280,7 @@ public class MenuHandler {
                     } while (!moveOn);
 
                 }
-                UserManager.addMember(userType, firstName, lastName, userName, password, userID, moneyAvailable,
+                UserManager.getInstance().addMember(userType, firstName, lastName, userName, password, userID, moneyAvailable,
                         hasMembership, new ArrayList<>());
                 System.out.println(userType + " " + firstName + " " + lastName + " has been created successfully!");
                 RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " created a new "
@@ -287,13 +290,13 @@ public class MenuHandler {
                 System.out.println("\n[View/Search Users]\n1. Display All Users \n2. Search for a Member");
                 switch (input.next()) {
                     case "1" -> {
-                        UserManager.displayAllMembers();
+                        UserManager.getInstance().displayAllMembers();
                         RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
                                 + " printed all members to the console");
                     }
                     case "2" -> {
                         System.out.print("Enter ID, Name, or Username to search: ");
-                        User u = UserManager.searchMember(input.next());
+                        User u = UserManager.getInstance().searchMember(input.next());
                         if (u != null) {
                             System.out.println("User found! ID: " + u.getUserID() + "\tName: " + u.getFirstName() + " "
                                     + u.getLastName() + "\tUsername: "
@@ -320,7 +323,7 @@ public class MenuHandler {
             }
             case "3" -> {
                 System.out.print("Enter ID, Name, or Username to update: ");
-                User u = UserManager.searchMember(input.next());
+                User u = UserManager.getInstance().searchMember(input.next());
                 if (u != null) {
                     System.out.println(
                             "What would you like to update?\n1. Change Name\n2. Change Username\n3. Change Password");
@@ -330,7 +333,7 @@ public class MenuHandler {
                             String newFirstName = input.next();
                             System.out.print("New Last Name: ");
                             String newLastName = input.next();
-                            UserManager.updateUserName(u, newFirstName, newLastName);
+                            UserManager.getInstance().updateUserName(u, newFirstName, newLastName);
                             System.out.println("Name updated successfully!");
                             RunTicketMiner.logAction(currentUser.getUserType() + currentUser.getUserID() + " updated "
                                     + u.getUserID() + "'s first and last name");
@@ -340,7 +343,7 @@ public class MenuHandler {
                             while (!usernameUpdated) {
                                 System.out.print("New Username: ");
                                 String newUsername = input.next();
-                                if (UserManager.updateUsername(u, newUsername)) {
+                                if (UserManager.getInstance().updateUsername(u, newUsername)) {
                                     System.out.println("Username updated successfully!");
                                     RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
                                             + " updated " + u.getUserID() + "'s username");
@@ -355,7 +358,7 @@ public class MenuHandler {
                         }
                         case "3" -> {
                             System.out.print("New Password: ");
-                            UserManager.updateUserPassword(u, input.next());
+                            UserManager.getInstance().updateUserPassword(u, input.next());
                             System.out.println("Password updated successfully!");
                             RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
                                     + " updated " + u.getUserID() + "'s password");
@@ -368,13 +371,13 @@ public class MenuHandler {
             }
             case "4" -> {
                 System.out.print("Enter ID, Name, or Username to DELETE: ");
-                User u = UserManager.searchMember(input.next());
+                User u = UserManager.getInstance().searchMember(input.next());
                 if (u != null) {
                     System.out.print("Are you sure you want to delete " + u.getFirstName() + "? (y/n): ");
                     if (input.next().equalsIgnoreCase("y")) {
                         RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
                                 + " deleted user " + u.getUserID());
-                        UserManager.deleteUser(u);
+                        UserManager.getInstance().deleteUser(u);
                     } else {
                         System.out.println("User not found.");
                     }
@@ -434,7 +437,7 @@ public class MenuHandler {
                 System.out.print("Reserved Extra %: ");
                 int reservedExtraPercent = Integer.parseInt(input.next());
 
-                VenueManager.addVenue(venueType, name, capacity, concertCapacity, cost, vipPercent, goldPercent, silverPercent,
+                VenueManager.getInstance().addVenue(venueType, name, capacity, concertCapacity, cost, vipPercent, goldPercent, silverPercent,
                         bronzePercent, generalAdmissionPercent, reservedExtraPercent);
                 System.out.println(venueType + " \"" + name + "\" added successfully!");
                 RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
@@ -444,13 +447,13 @@ public class MenuHandler {
                 System.out.println("\n[View/Search Venues]\n1. Display All Venues\n2. Search for a Venue");
                 switch (input.next()) {
                     case "1" -> {
-                        VenueManager.displayAllVenues();
+                        VenueManager.getInstance().displayAllVenues();
                         RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
                                 + " printed all venues to console");
                     }
                     case "2" -> {
                         System.out.print("Enter Venue ID, Name, or Type to search: ");
-                        Venue v = VenueManager.searchVenue(input.next());
+                        Venue v = VenueManager.getInstance().searchVenue(input.next());
                         if (v != null) {
                             System.out.println(v);
                             RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID()
@@ -465,7 +468,7 @@ public class MenuHandler {
 
             case "3" -> {
                 System.out.print("Enter Venue ID, Name, or Type to update: ");
-                Venue v = VenueManager.searchVenue(input.next());
+                Venue v = VenueManager.getInstance().searchVenue(input.next());
                 if (v != null) {
                     System.out.println("What would you like to update?\n1. Name\n2. Cost\n3. Capacity");
                     switch (input.next()) {
@@ -480,13 +483,13 @@ public class MenuHandler {
                         }
                         case "2" -> {
                             System.out.print("New Cost: ");
-                            VenueManager.updateVenueCost(v, Double.parseDouble(input.next()));
+                            VenueManager.getInstance().updateVenueCost(v, Double.parseDouble(input.next()));
                             System.out.println("Venue cost updated successfully!");
                             RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " updated the cost of venue " + v.getId());
                         }
                         case "3" -> {
                             System.out.print("New Capacity: ");
-                            VenueManager.updateVenueCapacity(v, Integer.parseInt(input.next()));
+                            VenueManager.getInstance().updateVenueCapacity(v, Integer.parseInt(input.next()));
                             System.out.println("Venue capacity updated successfully!");
                             RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " updated the capacity of venue " + v.getId());
                         }
@@ -498,12 +501,12 @@ public class MenuHandler {
             }
             case "4" -> {
                 System.out.print("Enter Venue ID or Name to DELETE: ");
-                Venue v = VenueManager.searchVenue(input.next());
+                Venue v = VenueManager.getInstance().searchVenue(input.next());
                 if (v != null) {
                     System.out.print("Confirm deletion of " + v.getName() + "? (y/n): ");
                     if (input.next().equalsIgnoreCase("y")) {
                         RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " deleted venue " + v.getId());
-                        VenueManager.deleteVenue(v);
+                        VenueManager.getInstance().deleteVenue(v);
                     }
                 } else {
                     System.out.println("Venue not found.");
@@ -563,7 +566,7 @@ public class MenuHandler {
                 System.out.print("General Admission Price: ");
                 double generalAdmissionPrice = Double.parseDouble(input.next());
 
-                EventManager.addEvent(eventType, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice,
+                EventManager.getInstance().addEvent(eventType, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice,
                         generalAdmissionPrice);
                 System.out.println(eventType + " \"" + name + "\" added successfully!");
                 RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " created a new venue (Name: " + name);
@@ -572,12 +575,12 @@ public class MenuHandler {
                 System.out.println("\n[View/Search Events]\n1. Display All Events\n2. Search for an Event");
                 switch (input.next()) {
                     case "1" -> {
-                        EventManager.displayAllEvents();
+                        EventManager.getInstance().displayAllEvents();
                         RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " printed all events to console.");
                     }
                     case "2" -> {
                         System.out.print("Enter Event ID, Name, or Date (YYYY-MM-DD): ");
-                        Event e = EventManager.searchEvent(input.next());
+                        Event e = EventManager.getInstance().searchEvent(input.next());
                         if (e != null) {
                             System.out.println(e);
                             RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " searched and found event " + e.getId());
@@ -590,7 +593,7 @@ public class MenuHandler {
             }
             case "3" -> {
                 System.out.print("Enter Event ID, Name, or Date to update: ");
-                Event e = EventManager.searchEvent(input.next());
+                Event e = EventManager.getInstance().searchEvent(input.next());
                 if (e != null) {
                     System.out.println("What would you like to update?\n1. Name\n2. Date & Time");
                     switch (input.next()) {
@@ -599,7 +602,7 @@ public class MenuHandler {
                             String newName = input.nextLine().trim();
                             if (newName.isEmpty())
                                 newName = input.nextLine().trim();
-                            EventManager.updateEventName(e, newName);
+                            EventManager.getInstance().updateEventName(e, newName);
                             System.out.println("Event name updated successfully!");
                             RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " updated the name of event " + e.getId());
                         }
@@ -610,7 +613,7 @@ public class MenuHandler {
                             input.nextLine();
                             LocalTime newTime = LocalTime.parse(input.nextLine().trim().toUpperCase(),
                                     DateTimeFormatter.ofPattern("h:mm a"));
-                            EventManager.updateEventDateTime(e, newDate, newTime);
+                            EventManager.getInstance().updateEventDateTime(e, newDate, newTime);
                             System.out.println("Event date and time updated successfully!");
                             RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " updated the date and time of event " + e.getId());
                         }
@@ -622,12 +625,12 @@ public class MenuHandler {
             }
             case "4" -> {
                 System.out.print("Enter Event ID or Name to DELETE: ");
-                Event e = EventManager.searchEvent(input.next());
+                Event e = EventManager.getInstance().searchEvent(input.next());
                 if (e != null) {
                     System.out.print("Confirm cancellation of " + e.getName() + "? (y/n): ");
                     if (input.next().equalsIgnoreCase("y")) {
                         RunTicketMiner.logAction(currentUser.getUserType() + " " + currentUser.getUserID() + " deleted event " + e.getId());
-                        EventManager.deleteEvent(e);
+                        EventManager.getInstance().deleteEvent(e);
                     }
                 } else {
                     System.out.println("Event not found.");
@@ -636,6 +639,75 @@ public class MenuHandler {
             case "5" -> {
                 /* Back */ }
             default -> System.out.println("Error: Invalid input.");
+        }
+    }
+
+    /**
+     * Prints a gui providing Customer User objects the choice to purchase tickets
+     * or print their order summaries. Handles the InsufficientFundsException.
+     * * @param customer The Customer User object logged in.
+     */
+    public static void customerMenu(Customer customer) {
+        boolean logout = false;
+        while (!logout) {
+            System.out.println("\n[Customer Menu]\n1. Purchase Tickets\n2. Print Order Summary\n3. Logout");
+            System.out.print(">> ");
+            switch (input.next()) {
+                case "1" -> {
+                    System.out.println("\n--- Available Events ---");
+                    for (Event e : EventManager.getInstance().getEventList()) {
+                        System.out.println("ID: " + e.getId() + " | Name: " + e.getName() + " | Date: " + e.getDate());
+                    }
+                    System.out.print("Enter the ID of the event you want to attend: ");
+                    Event selectedEvent = EventManager.getInstance().searchEvent(input.next());
+                    
+                    if (selectedEvent == null) {
+                        System.out.println("Event not found.");
+                        continue;
+                    }
+
+                    System.out.println("\nTicket Prices for " + selectedEvent.getName() + ":");
+                    System.out.println("1. VIP: $" + selectedEvent.getVipPrice());
+                    System.out.println("2. Gold: $" + selectedEvent.getGoldPrice());
+                    System.out.println("3. Silver: $" + selectedEvent.getSilverPrice());
+                    System.out.println("4. Bronze: $" + selectedEvent.getBronzePrice());
+                    System.out.println("5. General Admission: $" + selectedEvent.getGeneralAdmissionPrice());
+                    System.out.print("Select a ticket type (1-5): ");
+                    
+                    double ticketPrice = 0.0;
+                    switch(input.next()) {
+                        case "1" -> ticketPrice = selectedEvent.getVipPrice();
+                        case "2" -> ticketPrice = selectedEvent.getGoldPrice();
+                        case "3" -> ticketPrice = selectedEvent.getSilverPrice();
+                        case "4" -> ticketPrice = selectedEvent.getBronzePrice();
+                        case "5" -> ticketPrice = selectedEvent.getGeneralAdmissionPrice();
+                        default -> {
+                            System.out.println("Invalid ticket type.");
+                            continue;
+                        }
+                    }
+                    
+                    // Create a standard ticket to process the transaction
+                    int generatedTicketID = (int)(Math.random() * 100000);
+                    Ticket newTicket = new Ticket(generatedTicketID, selectedEvent.getId(), ticketPrice, 0, false);
+                    
+                    // --- THIS IS WHERE OUR CUSTOM EXCEPTION IS CAUGHT ---
+                    try {
+                        customer.buyTicket(newTicket);
+                        System.out.println("\nPurchase successful! Ticket ID: " + generatedTicketID);
+                        System.out.println("Remaining Balance: $" + customer.getMoneyAvailable());
+                        RunTicketMiner.logAction("Customer " + customer.getUserID() + " purchased a ticket for event " + selectedEvent.getId());
+                    } catch (InsufficientFundsException e) {
+                        System.out.println("\n" + e.getMessage()); // Prints our custom error message
+                        RunTicketMiner.logAction("Customer " + customer.getUserID() + " failed to purchase ticket due to insufficient funds.");
+                    }
+                }
+                case "2" -> {
+                    System.out.println("\nOrder summary text file generation coming soon...");
+                }
+                case "3" -> logout = true;
+                default -> System.out.println("Invalid choice.");
+            }
         }
     }
 

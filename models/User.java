@@ -1,8 +1,9 @@
 package models;
+import Interface.Exportable;
 /**
  *  Our abstract representation of a User 
  */
-public abstract class User {
+public abstract class User implements Exportable{
     /** Our user's first name */
     private String firstName;
     /** Our user's last name */
@@ -46,4 +47,9 @@ public abstract class User {
     public void setPassword(String password) {this.password = password;}
 
     public abstract String getUserType();
+
+    @Override
+    public String toCSVString() {
+        return userID + "," + firstName + "," + lastName + "," + username + "," + password + "," + getUserType();
+    }
 }

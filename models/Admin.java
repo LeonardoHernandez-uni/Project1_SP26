@@ -30,4 +30,10 @@ public class Admin extends User {
     public String getUserType() {
         return "Admin";
     }
+
+    @Override
+    public String toCSVString() {
+        // Adds three empty commas so it aligns with the Customer columns in the CSV
+        return super.toCSVString() + ",,,";
+    }
 }

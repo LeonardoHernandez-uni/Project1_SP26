@@ -1,6 +1,7 @@
 package models;
 import java.time.*;
-public abstract class Event {
+import Interface.Exportable;
+public abstract class Event implements Exportable{
 	private int id;
 	private String eventType;
 	private String name;
@@ -12,7 +13,12 @@ public abstract class Event {
 	private double bronzePrice;
 	private double generalAdmissionPrice;
 	
-	
+	@Override
+    public String toCSVString() {
+        return id + "," + eventType + "," + name + "," + date + "," + time + "," + 
+               vipPrice + "," + goldPrice + "," + silverPrice + "," + 
+               bronzePrice + "," + generalAdmissionPrice;
+    }
 	
 	/** Our representation of an event object
 	 * @param id

@@ -1,5 +1,7 @@
 package models;
 import java.util.*;
+
+import exceptions.InsufficientFundsException;
 public class Customer extends User{
     private double moneyAvailable;
     private boolean hasMembership;
@@ -23,21 +25,26 @@ public class Customer extends User{
         this.purchasedTickets = purchasedTickets;
     }
 
-    /** This method buys a ticket and stores it to the customer's purchasedTickets attribute if the ticket isn't already sold and the customer has enough funds to cover the ticket.
-     * When the customer buys the ticket, said ticket will be marked as sold meaning no other customer can buy that ticket again.
-     * 
-     * @param ticket The ticket the customer is trying to buy.
+    /** * This method buys a ticket and stores it to the customer's purchasedTickets attribute.
+     * Throws a custom exception if the user does not have enough money.
+     * * @param ticket The ticket the customer is trying to buy.
+     * @throws InsufficientFundsException if the customer's funds are lower than the ticket price.
      */
-    public void buyTicket(Ticket ticket) {
-        if (moneyAvailable >= ticket.getPrice() && !ticket.checkIfSold()) {
-            ticket.setIfSold(true);
-            moneyAvailable-= ticket.getPrice();
-            purchasedTickets.add(ticket);
-        } else if ((moneyAvailable >= ticket.getPrice() == false)) {
-            System.out.print("Error: Not enough funds.");
-        } else {
-            System.out.print("Error: The ticket trying to be bought has been sold (event has been sold out)");
+    public void buyTicket(Ticket ticket) throws InsufficientFundsException {
+        if (ticket.checkIfSold()) {
+            System.out.println("Error: The ticket trying to be bought has been sold (event has been sold out)");
+            return; // Stop the method
         }
+        
+        if (moneyAvailable < ticket.getPrice()) {
+            // Throwing our custom exception instead of just printing a message!
+            throw new InsufficientFundsException("Transaction failed: " + this.getUsername() + " does not have enough funds for this " + ticket.getPrice() + " ticket.");
+        }
+        
+        // If we make it here, the ticket is available and they have the money
+        ticket.setIfSold(true);
+        moneyAvailable -= ticket.getPrice();
+        purchasedTickets.add(ticket);
     }
     
 
@@ -56,4 +63,10 @@ public class Customer extends User{
     public boolean getHasMembership() { return hasMembership; }
     /** Returns the amount of tickets a customer has purchased by getting the size of the purchased tickets ArrayList */
     public int getAmountOfTicketsPurchased() {return purchasedTickets.size();}
+
+    @Override
+    public String toCSVString() {
+        // Appends the specific customer data to the base user data
+        return super.toCSVString() + "," + moneyAvailable + "," + hasMembership + "," + getAmountOfTicketsPurchased();
+    }
 }

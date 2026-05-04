@@ -1,7 +1,8 @@
 package models;
+import Interface.Exportable;
 
 /** Our abstract representation of a Venue */
-public abstract class Venue {
+public abstract class Venue implements Exportable{
     private int id;
     private String name;
     private String type;
@@ -15,7 +16,14 @@ public abstract class Venue {
     private int generalAdmissionPercent;
     private int reservedExtraPercent;
     
-    
+    @Override
+    public String toCSVString() {
+        return id + "," + name + "," + type + "," + capacity + "," + 
+               concertCapacity + "," + cost + "," + vipPercent + "," + 
+               goldPercent + "," + silverPercent + "," + bronzePercent + "," + 
+               generalAdmissionPercent + "," + reservedExtraPercent;
+    }
+	
     public Venue(int id, String name, String type, int capacity, int concertCapacity, double cost, double vipPercent, int goldPercent, int silverPercent, int bronzePercent, int generalAdmissionPercent, int reservedExtraPercent) {
         this.id = id;
         this.name = name;

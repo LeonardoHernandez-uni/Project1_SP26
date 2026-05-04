@@ -11,18 +11,37 @@ import java.util.*;
 import models.*;
 
 public class VenueManager {
-    /**
-     * venueList stores all the venue in the system as Venue objects within an
-     * ArrayList. It is what we load/save data to, and its what we access to modify
-     * venue entries.
-     */
-    private static ArrayList<Venue> venueList = new ArrayList<>();
 
-    /** Returns venueList. Is used for accessing venueList from other classes. */
-    public static ArrayList<Venue> getVenueList() {
-        return venueList;
+    /** The single, private static instance of the class */
+    private static VenueManager instance;
+
+    /** venueList stores all the venues in the system. */
+    private ArrayList<Venue> venueList;
+
+    /** * Private constructor to prevent instantiation from outside the class.
+     * Initializes the venueList.
+     */
+    private VenueManager() {
+        venueList = new ArrayList<>();
     }
 
+    /**
+     * Retrieves the single, shared instance of the VenueManager.
+     * @return The Singleton instance of VenueManager.
+     */
+    public static VenueManager getInstance() {
+        if (instance == null) {
+            instance = new VenueManager();
+        }
+        return instance;
+    }
+
+    /** * Returns the list of venues.
+     * @return The ArrayList containing all venues.
+     */
+    public ArrayList<Venue> getVenueList() {
+        return venueList;
+    }
     /**
      * Loads data from the venue file (in this case Venue_List_PA1.csv) and parses
      * its entries row by row into venueList as Venue objects, assigning parameters
@@ -31,8 +50,8 @@ public class VenueManager {
      * determine whether the Venue will be an Arena, an Auditorium, OpenAir, or a
      * Stadium.
      */
-    public static void loadData() {
-        String venueFile = "Venue_List_PA1.csv";
+    public void loadData() {
+        String venueFile = "Venue_List_PA2.csv";
         String line;
         String csvSplitBy = ",";
 
@@ -77,30 +96,16 @@ public class VenueManager {
         }
     }
 
-    public static void saveData() {
+    public void saveData() {
 
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy_MM_dd");
 
         try (FileWriter file = new FileWriter(LocalDate.now().format(pattern) + "_Venue_List_PA1.csv")) {
+            file.write("ID,Name,Type,Capacity,Concert Capacity,Cost,VIP Percent,Gold Percent,Silver Percent,Bronze Percent,General Admission Percent,Reserved Extra Percent\n");
 
-            file.write(
-                    "ID,Name,Type,Capacity,Concert Capacity,Cost,VIP Percent,Gold Percent,Silver Percent,Bronze Percent,General Admission Percent,Reserved Extra Percent\n");
-
+            //loook clean now
             for (Venue venue : venueList) {
-                //Word wrapping is weird lowk
-                file.write(
-                        venue.getId() + "," +
-                                venue.getName() + "," +
-                                venue.getType() + "," +
-                                venue.getCapacity() + "," +
-                                venue.getConcertCapacity() + "," + 
-                                venue.getCost() + "," +
-                                venue.getVipPercent() + "," +
-                                venue.getGoldPercent() + "," +
-                                venue.getSilverPercent() + "," +
-                                venue.getBronzePercent() + "," +
-                                venue.getGeneralAdmissionPercent() + "," +
-                                venue.getReservedExtraPercent() + "\n");
+                file.write(venue.toCSVString() + "\n");
             }
 
         } catch (IOException e) {
@@ -109,7 +114,7 @@ public class VenueManager {
     }
 
     //refactored admin stuff
-    public static void displayAllVenues() {
+    public void displayAllVenues() {
         System.out.println("\n--- All Venues ---");
         System.out.printf("%-5s | %-25s | %-12s | %-8s | %-10s | %-15s | %-4s | %-5s | %-7s | %-7s | %-7s | %-7s%n",
             "ID", "Name", "Type", "Capacity", "ConcertCap", "Cost", "VIP%", "Gold%", "Silver%", "Bronze%", "GenAdm%", "ResExt%");
@@ -146,7 +151,7 @@ public class VenueManager {
      * @param generalAdmissionPercent The percentage allocated to General Admission.
      * @param reservedExtraPercent The percentage allocated to Reserved Extra seating.
      */
-    public static void addVenue(String type, String name, int capacity, int concertCapacity, double cost, double vipPercent, int goldPercent, int silverPercent, int bronzePercent, int generalAdmissionPercent, int reservedExtraPercent) {
+    public void addVenue(String type, String name, int capacity, int concertCapacity, double cost, double vipPercent, int goldPercent, int silverPercent, int bronzePercent, int generalAdmissionPercent, int reservedExtraPercent) {
         int newID = venueList.stream().mapToInt(Venue::getId).max().orElse(0) + 1;
         switch (type) {
             case "Arena" -> venueList.add(new Arena(newID, name, type, capacity, concertCapacity, cost, vipPercent, goldPercent, silverPercent, bronzePercent, generalAdmissionPercent, reservedExtraPercent));
@@ -162,7 +167,7 @@ public class VenueManager {
      * * @param query The string to search for.
      * @return The matching Venue object, or null if no match is found.
      */
-    public static Venue searchVenue(String query) {
+    public Venue searchVenue(String query) {
         for (Venue v : venueList) {
             if (String.valueOf(v.getId()).equals(query) || v.getName().equalsIgnoreCase(query) || v.getType().equalsIgnoreCase(query)) {
                 return v;
@@ -183,18 +188,18 @@ public class VenueManager {
      * * @param v The Venue to update.
      * @param newCost The new base cost.
      */
-    public static void updateVenueCost(Venue v, double newCost) { v.setCost(newCost); }
+    public void updateVenueCost(Venue v, double newCost) { v.setCost(newCost); }
 
     /**
      * Updates the maximum capacity of a specific Venue.
      * * @param v The Venue to update.
      * @param newCapacity The new maximum capacity.
      */
-    public static void updateVenueCapacity(Venue v, int newCapacity) { v.setCapacity(newCapacity); }
+    public void updateVenueCapacity(Venue v, int newCapacity) { v.setCapacity(newCapacity); }
 
     /**
      * Removes a specific Venue from the system.
      * * @param v The Venue to delete.
      */
-    public static void deleteVenue(Venue v) { venueList.remove(v); }
+    public void deleteVenue(Venue v) { venueList.remove(v); }
 }
