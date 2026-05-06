@@ -92,12 +92,33 @@ public class EventManager {
                 double bronzePrice = Double.parseDouble(data[colMap.get("bronze price")]);
                 double generalAdmissionPrice = Double.parseDouble(data[colMap.get("general admission price")]);
 
+                Event newEvent = null;
                 if (type.equalsIgnoreCase("Concert")) {
-                    eventList.add(new Concert(id, type, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice, generalAdmissionPrice));
+                    newEvent = new Concert(id, type, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice, generalAdmissionPrice);
                 } else if (type.equalsIgnoreCase("Special")) {
-                    eventList.add(new Special(id, type, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice, generalAdmissionPrice));
+                    newEvent = new Special(id, type, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice, generalAdmissionPrice);
                 } else if (type.equalsIgnoreCase("Sport")) {
-                    eventList.add(new Sport(id, type, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice, generalAdmissionPrice));
+                    newEvent = new Sport(id, type, name, date, time, vipPrice, goldPrice, silverPrice, bronzePrice, generalAdmissionPrice);
+                }
+
+                if (newEvent != null) {
+                    // LINKING LOGIC: Assign the correct building based on keywords in the name
+                    String lowerName = name.toLowerCase();
+                    models.Venue venue = null;
+
+                    if (lowerName.contains("football") || lowerName.contains("sun bowl")) {
+                        venue = VenueManager.getInstance().searchVenue("2"); // ID 2 is Sun Bowl (58,000)
+                    } else if (lowerName.contains("basketball") || lowerName.contains("haskins") || lowerName.contains("miners")) {
+                        venue = VenueManager.getInstance().searchVenue("1"); // ID 1 is Don Haskins (12,800)
+                    } else {
+                        // Default to Don Haskins for other events
+                        venue = VenueManager.getInstance().searchVenue("1");
+                    }
+
+                    if (venue != null) {
+                        newEvent.setLocation(venue); // This now triggers the ticket update in Event.java
+                    }
+                    eventList.add(newEvent);
                 }
             }
         } catch (Exception e) {

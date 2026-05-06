@@ -13,8 +13,9 @@ public abstract class Event implements Exportable{
 	private double silverPrice;
 	private double bronzePrice;
 	private double generalAdmissionPrice;
-	private ArrayList<Ticket> ticketPool; 
-	
+	private Venue location;
+	private ArrayList<Ticket> ticketPool = new ArrayList<>(); 
+
 	@Override
     public String toCSVString() {
         return id + "," + eventType + "," + name + "," + date + "," + time + "," + 
@@ -78,7 +79,8 @@ public abstract class Event implements Exportable{
 		this.silverPrice = silverPrice;
 		this.bronzePrice = bronzePrice;
 		this.generalAdmissionPrice = generalAdmissionPrice;
-		createTicketPool(100);
+		this.ticketPool = new ArrayList<>(); 
+		createTicketPool(69);
 	}
 	/**
 	 * @return the id
@@ -252,4 +254,20 @@ public abstract class Event implements Exportable{
 		}
 		return false;
 	}
+	/**
+	 * @return the venue location
+	 */
+	public Venue getLocation() {
+		return location;
+	}
+	/**
+	 * @param location the venue to set
+	 */
+	public void setLocation(Venue location) { 
+        this.location = location; 
+        // The exact second a Venue is linked, wipe the 100 fake tickets and instantly generate the real capacity!
+        this.ticketPool.clear();
+        createTicketPool(location.getCapacity());
+    }
+
 }
