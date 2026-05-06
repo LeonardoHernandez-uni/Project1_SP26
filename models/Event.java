@@ -13,7 +13,6 @@ public abstract class Event implements Exportable{
 	private double silverPrice;
 	private double bronzePrice;
 	private double generalAdmissionPrice;
-	private Venue location;
 	private ArrayList<Ticket> ticketPool; 
 	
 	@Override
@@ -52,7 +51,7 @@ public abstract class Event implements Exportable{
 		this.generalAdmissionPrice = generalAdmissionPrice;
 		createTicketPool(ticketAmount);
 	}
-	/** Our representation of an event object where the ticketPool is determined by the venue the event is in's capacity.
+	/** Our representation of an event object where the ticketPool is a set value of 100 (since the CSV does not have venues set for any of the events :/)
 	 * @param id
 	 * @param eventType
 	 * @param name
@@ -79,7 +78,7 @@ public abstract class Event implements Exportable{
 		this.silverPrice = silverPrice;
 		this.bronzePrice = bronzePrice;
 		this.generalAdmissionPrice = generalAdmissionPrice;
-		createTicketPool(location.getCapacity());
+		createTicketPool(100);
 	}
 	/**
 	 * @return the id
