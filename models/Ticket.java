@@ -1,15 +1,14 @@
 package models;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 public class Ticket {
     private int ticketID;
+    private String ticketType;
     private int eventID;
     private double price;
     private int seatNumber;
     private boolean isSold;
     private final double SALES_TAX = .0875;
+    private Event event;
 
     public Ticket(int ticketID, int eventID, double price, int seatNumber, boolean isSold) {
         this.ticketID = ticketID;
@@ -18,6 +17,16 @@ public class Ticket {
         this.seatNumber = seatNumber;
         this.isSold = isSold;
     }
+    public Ticket(int ticketID, String ticketType, int eventID, double price, int seatNumber, boolean isSold, Event event) {
+        this.ticketID = ticketID;
+        this.ticketType = ticketType;
+        this.eventID = eventID;
+        this.price = price;
+        this.seatNumber = seatNumber;
+        this.isSold = isSold;
+        this.event = event;
+    }
+
     public int getTicketID() {
         return ticketID;
     }
@@ -35,5 +44,11 @@ public class Ticket {
     }
     public boolean checkIfSold() {
         return isSold;
+    }
+    public Event getEvent() {
+        return event;
+    }
+    public String getTicketType() {
+        return ticketType;
     }
 }

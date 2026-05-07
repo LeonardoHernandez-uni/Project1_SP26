@@ -14,13 +14,12 @@ public class UserManager {
     /** userList stores all the users in the system. */
     private ArrayList<User> userList;
 
-    /** Texas Sales tax of 8.75% */
-    private static final double SALES_TAX = 0.0875;
-
     /** Private constructor to ensure only one instance of the class is created. */
     private UserManager() {
         userList = new ArrayList<>();
     }
+    /** The Texas Sales Tax of 8.75% */
+    private final static double SALES_TAX = 0.0875;
 
     /** Returns the single, static instance of the UserManager class. */
     public static UserManager getInstance() {
@@ -78,7 +77,9 @@ public class UserManager {
             System.err.println("Error loading user data: " + e.getMessage());
         }
 	}
-
+    /**
+     * Saves customer data onto a new formatted csv file
+     */
 	public void saveData() {
 		DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy_MM_dd");
         
@@ -91,12 +92,19 @@ public class UserManager {
             System.err.println("Error saving user data: " + e.getMessage());
         }
 	}
-
+    /**
+     * Creates a txt file with various order parameters based off what is stored in the customer's ticketsPurchased list
+     * @param customer
+     */
     public static void generateOrderSummary(Customer customer) {
         try (FileWriter file = new FileWriter(customer.getFirstName() + "_" + customer.getLastName() + "_Order_Summary.txt")) {
             file.write("Order Summary for " + customer.getFirstName() + " " + customer.getLastName() + "\n");
             for (Ticket ticket : customer.getTicketsPurchased()) {
-               file.write("TicketID: " + ticket.getTicketID() + "\n EventID: " + ticket.getEventID() + "\n Ticket Price: " + ticket.getPrice() + "\n Texas Sales Tax: " + (ticket.getPrice() * SALES_TAX) + "\n Total Cost: " + (ticket.getPrice() + (ticket.getPrice() * SALES_TAX)) + "\n Seat Number: " + ticket.getSeatNumber());
+                double totalPrice = Math.round((ticket.getPrice() + (ticket.getPrice() * SALES_TAX)) * 100.0) / 100.0;
+               file.write("Event Type: " + ticket.getEvent().getEventType() + "\n Event Name: " + ticket.getEvent().getName() + 
+               "\n Event Date: " + ticket.getEvent().getDate() + "\n Ticket Type: " + ticket.getTicketType() + "\n Number of Tickets: 1" + 
+               "\n Total Price: " + totalPrice + "\n Confirmation Number: " + Math.round(Math.random() * 1000)
+            );
                file.write("\n \n");
             }
             file.close();

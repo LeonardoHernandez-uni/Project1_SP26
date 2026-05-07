@@ -43,7 +43,11 @@ public class Customer extends User{
         
         // If we make it here, the ticket is available and they have the money
         ticket.setIfSold(true);
-        moneyAvailable -= ticket.getPrice() * SALES_TAX;
+        double totalPrice = ticket.getPrice() * SALES_TAX;
+        if (hasMembership) {
+            totalPrice-= totalPrice * 0.10;
+        }
+        moneyAvailable -= totalPrice;
         purchasedTickets.add(ticket);
     }
     

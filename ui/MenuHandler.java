@@ -676,12 +676,28 @@ public class MenuHandler {
                     System.out.print("Select a ticket type (1-5): ");
                     
                     double ticketPrice = 0.0;
+                    String ticketType;
                     switch(input.next()) {
-                        case "1" -> ticketPrice = selectedEvent.getVipPrice();
-                        case "2" -> ticketPrice = selectedEvent.getGoldPrice();
-                        case "3" -> ticketPrice = selectedEvent.getSilverPrice();
-                        case "4" -> ticketPrice = selectedEvent.getBronzePrice();
-                        case "5" -> ticketPrice = selectedEvent.getGeneralAdmissionPrice();
+                        case "1" -> {
+                            ticketPrice = selectedEvent.getVipPrice(); 
+                            ticketType = "VIP";
+                        }
+                        case "2" -> {
+                            ticketPrice = selectedEvent.getGoldPrice();
+                            ticketType = "Gold";
+                        }
+                        case "3" -> {
+                            ticketPrice = selectedEvent.getSilverPrice();
+                            ticketType = "Silver";
+                        }
+                        case "4" ->{
+                            ticketPrice = selectedEvent.getBronzePrice();
+                            ticketType = "Bronze";
+                        }
+                        case "5" -> {
+                            ticketPrice = selectedEvent.getGeneralAdmissionPrice();
+                            ticketType = "General Admission";
+                        }
                         default -> {
                             System.out.println("Invalid ticket type.");
                             continue;
@@ -690,8 +706,8 @@ public class MenuHandler {
                     
                     // Create a standard ticket to process the transaction
                     int generatedTicketID = (int)(Math.random() * 100000);
-                    int generatedSeat = (int)(Math.random() * 10);
-                    Ticket newTicket = new Ticket(generatedTicketID, selectedEvent.getId(), ticketPrice, generatedSeat , false);
+                    int generatedSeat = (int)(Math.random() * 100);
+                    Ticket newTicket = new Ticket(generatedTicketID, ticketType, selectedEvent.getId(), ticketPrice, generatedSeat , false, selectedEvent);
                     selectedEvent.addTicket(newTicket);
                     
                     // --- THIS IS WHERE OUR CUSTOM EXCEPTION IS CAUGHT ---
