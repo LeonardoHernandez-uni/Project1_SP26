@@ -14,6 +14,9 @@ public class UserManager {
     /** userList stores all the users in the system. */
     private ArrayList<User> userList;
 
+    /** Texas Sales tax of 8.75% */
+    private static final double SALES_TAX = 0.0875;
+
     /** Private constructor to ensure only one instance of the class is created. */
     private UserManager() {
         userList = new ArrayList<>();
@@ -93,7 +96,7 @@ public class UserManager {
         try (FileWriter file = new FileWriter(customer.getFirstName() + "_" + customer.getLastName() + "_Order_Summary.txt")) {
             file.write("Order Summary for " + customer.getFirstName() + " " + customer.getLastName() + "\n");
             for (Ticket ticket : customer.getTicketsPurchased()) {
-               file.write("TicketID: " + ticket.getTicketID() + "\n EventID: " + ticket.getEventID() + "\n Ticket Price: " + ticket.getPrice() + "\n Texas Sales Tax: " + (ticket.getPrice() * .0875) + "\n Total Cost: " + (ticket.getPrice() + (ticket.getPrice * .0875)) + "\n Seat Number: " + ticket.getSeatNumber());
+               file.write("TicketID: " + ticket.getTicketID() + "\n EventID: " + ticket.getEventID() + "\n Ticket Price: " + ticket.getPrice() + "\n Texas Sales Tax: " + (ticket.getPrice() * SALES_TAX) + "\n Total Cost: " + (ticket.getPrice() + (ticket.getPrice() * SALES_TAX)) + "\n Seat Number: " + ticket.getSeatNumber());
                file.write("\n \n");
             }
             file.close();

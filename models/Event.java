@@ -181,6 +181,12 @@ public abstract class Event implements Exportable{
 		
 		ticketPool.add(ticket);
 	}
+
+	public void createTicketPool(int quantity) {
+		for (int i = 1; i < quantity; i++) {
+			ticketPool.add(new Ticket(i, i, i, i, false));
+		}
+	}
 	/** Simple getter for the ticket pool ArrayList
 	 * 
 	 * @return ticketPool
@@ -188,8 +194,6 @@ public abstract class Event implements Exportable{
 	public ArrayList<Ticket> getTicketPool() {
 		return ticketPool;
 	}
-<<<<<<< HEAD
-=======
 	/**
 	 * Checks to see if a ticketID is unique and returns false if 
 	 * a ticket in the ticket pool also has that ID
@@ -234,5 +238,4 @@ public abstract class Event implements Exportable{
         createTicketPool(location.getCapacity());
     }
 
->>>>>>> fd5858e31664767ef5b150cf57c6d7408a58b694
 }

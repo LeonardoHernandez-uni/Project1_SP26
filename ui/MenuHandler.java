@@ -690,7 +690,8 @@ public class MenuHandler {
                     
                     // Create a standard ticket to process the transaction
                     int generatedTicketID = (int)(Math.random() * 100000);
-                    Ticket newTicket = new Ticket(generatedTicketID, selectedEvent.getId(), ticketPrice, 0, false);
+                    int generatedSeat = (int)(Math.random() * 10);
+                    Ticket newTicket = new Ticket(generatedTicketID, selectedEvent.getId(), ticketPrice, generatedSeat , false);
                     selectedEvent.addTicket(newTicket);
                     
                     // --- THIS IS WHERE OUR CUSTOM EXCEPTION IS CAUGHT ---
