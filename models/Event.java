@@ -37,35 +37,6 @@ public abstract class Event implements Exportable{
 	 */
 
 	public Event(int id, String eventType, String name, LocalDate date, LocalTime time, double vipPrice,
-			double goldPrice, double silverPrice, double bronzePrice, double generalAdmissionPrice, int ticketAmount) {
-		super();
-		this.id = id;
-		this.eventType = eventType;
-		this.name = name;
-		this.date = date;
-		this.time = time;
-		this.vipPrice = vipPrice;
-		this.goldPrice = goldPrice;
-		this.silverPrice = silverPrice;
-		this.bronzePrice = bronzePrice;
-		this.generalAdmissionPrice = generalAdmissionPrice;
-		createTicketPool(ticketAmount);
-	}
-	/** Our representation of an event object where the ticketPool is a set value of 100 (since the CSV does not have venues set for any of the events :/)
-	 * @param id
-	 * @param eventType
-	 * @param name
-	 * @param date
-	 * @param time
-	 * @param vipPrice
-	 * @param goldPrice
-	 * @param silverPrice
-	 * @param bronzePrice
-	 * @param generalAdmissionPrice
-	 * @param ticketPool
-	 */
-
-	public Event(int id, String eventType, String name, LocalDate date, LocalTime time, double vipPrice,
 			double goldPrice, double silverPrice, double bronzePrice, double generalAdmissionPrice) {
 		super();
 		this.id = id;
@@ -78,7 +49,7 @@ public abstract class Event implements Exportable{
 		this.silverPrice = silverPrice;
 		this.bronzePrice = bronzePrice;
 		this.generalAdmissionPrice = generalAdmissionPrice;
-		createTicketPool(100);
+		this.ticketPool = new ArrayList<Ticket>();
 	}
 	/**
 	 * @return the id
@@ -200,22 +171,14 @@ public abstract class Event implements Exportable{
 	public void setGeneralAdmissionPrice(double generalAdmissionPrice) {
 		this.generalAdmissionPrice = generalAdmissionPrice;
 	}
-	/** Creates a list of tickets that can be purchased
-	 * @param quantity creates this many tickets and uses this number to set ticketIDs for search functions
-	 */
-	private void createTicketPool(int quantity) {
-		for (int i = 1; i <= quantity; i++) {
-			ticketPool.add(new Ticket(quantity - 1, id, generalAdmissionPrice, id, false));
-		}
-	}
 	/** Adds a single ticket to the ticket pool. Automatically sets the new ticket as unsold
 	 * 
 	 * @param ticketID Sets the new ticket's ID after confirming this ID is unique
 	 * @param seatNumber Sets the new ticket's seatNumber after confirming the seat number isn't taken
 	 */
-	public void addTicket(int ticketID, int seatNumber) {
+	public void addTicket(Ticket ticket) {
 		
-		ticketPool.add(new Ticket(ticketID, id, generalAdmissionPrice, seatNumber, false));
+		ticketPool.add(ticket);
 	}
 	/** Simple getter for the ticket pool ArrayList
 	 * 
@@ -223,33 +186,5 @@ public abstract class Event implements Exportable{
 	 */
 	public ArrayList<Ticket> getTicketPool() {
 		return ticketPool;
-	}
-	/**
-	 * Checks to see if a ticketID is unique and returns false if 
-	 * a ticket in the ticket pool also has that ID
-	 * @param ticketID
-	 * @return
-	 */
-	public boolean ticketIDIsUnique(int ticketID) {
-		for (Ticket t : ticketPool) {
-			if (t.getTicketID() == ticketID) {
-				return false;
-			}
-		}
-		return true;
-	}
-	/** Checks to see if a seatNumber has been taken by checking if the seat exists and 
-	 * checking if said seat has been sold
-	 * 
-	 * @param seatNumber
-	 * @return
-	 */
-	public boolean isSeatTaken(int seatNumber) {
-		for (Ticket t : ticketPool) {
-			if (t.getSeatNumber() == seatNumber && t.checkIfSold()) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

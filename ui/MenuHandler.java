@@ -3,12 +3,11 @@
  */
 package ui;
 
+import exceptions.InsufficientFundsException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
-import exceptions.InsufficientFundsException;
 import logic.EventManager;
 import logic.UserManager;
 import logic.VenueManager;
@@ -23,6 +22,8 @@ public class MenuHandler {
     private static boolean isCurrentUserAdmin = false;
     /** Accepts input from the user in the terminal */
     private static final Scanner input = new Scanner(System.in);
+    /** Defines a 8.75% sales tax */
+    private static final double SALES_TAX = 0.0875;
 
     /**
      * Prints the main menu and listens to user input via the terminal. From the
@@ -690,6 +691,7 @@ public class MenuHandler {
                     // Create a standard ticket to process the transaction
                     int generatedTicketID = (int)(Math.random() * 100000);
                     Ticket newTicket = new Ticket(generatedTicketID, selectedEvent.getId(), ticketPrice, 0, false);
+                    selectedEvent.addTicket(newTicket);
                     
                     // --- THIS IS WHERE OUR CUSTOM EXCEPTION IS CAUGHT ---
                     try {
@@ -703,7 +705,10 @@ public class MenuHandler {
                     }
                 }
                 case "2" -> {
-                    System.out.println("\nOrder summary text file generation coming soon...");
+                    System.out.println("Creating order report...\n");
+                    UserManager.generateOrderSummary(customer);
+                    System.out.println("Order summary report has been created and saved in the root folder!\n");
+                    RunTicketMiner.logAction("Customer " + customer.getUserID() + " printed a summary of their order.");
                 }
                 case "3" -> logout = true;
                 default -> System.out.println("Invalid choice.");

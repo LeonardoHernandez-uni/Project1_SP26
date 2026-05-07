@@ -89,6 +89,19 @@ public class UserManager {
         }
 	}
 
+    public static void generateOrderSummary(Customer customer) {
+        try (FileWriter file = new FileWriter(customer.getFirstName() + "_" + customer.getLastName() + "_Order_Summary.txt")) {
+            file.write("Order Summary for " + customer.getFirstName() + " " + customer.getLastName() + "\n");
+            for (Ticket ticket : customer.getTicketsPurchased()) {
+               file.write("TicketID: " + ticket.getTicketID() + "\n EventID: " + ticket.getEventID() + "\n Ticket Price: " + ticket.getPrice() + "\n Texas Sales Tax: " + (ticket.getPrice() * .0875) + "\n Total Cost: " + (ticket.getPrice() + (ticket.getPrice * .0875)) + "\n Seat Number: " + ticket.getSeatNumber());
+               file.write("\n \n");
+            }
+            file.close();
+        } catch (IOException e) {
+            System.err.println("Error printing an order " + e.getMessage());
+        }
+    }
+
 	/** generateID randomly generates a new 4 digit ID. After a new ID is generated, it is compared to all the IDs in userList using the isIDUnique() method. If the ID isn't unique, a new ID will be generated until
 	 * the isIDUnique() method returns true.
 	 * @return The randomly generated unique ID.

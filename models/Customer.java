@@ -1,11 +1,11 @@
 package models;
-import java.util.*;
-
 import exceptions.InsufficientFundsException;
+import java.util.*;
 public class Customer extends User{
     private double moneyAvailable;
     private boolean hasMembership;
     private ArrayList<Ticket> purchasedTickets;
+    private final double SALES_TAX = .0875;
     
     /** Constructs a customer class by taking superclass User's parameters and instantiating them in a super class.
      * Also instantiates Customer unique attributes "moneyAvaliable", "hasMembership", and the ArrayList "ticketsPurchased"
@@ -43,7 +43,7 @@ public class Customer extends User{
         
         // If we make it here, the ticket is available and they have the money
         ticket.setIfSold(true);
-        moneyAvailable -= ticket.getPrice();
+        moneyAvailable -= ticket.getPrice() * SALES_TAX;
         purchasedTickets.add(ticket);
     }
     
@@ -63,6 +63,7 @@ public class Customer extends User{
     public boolean getHasMembership() { return hasMembership; }
     /** Returns the amount of tickets a customer has purchased by getting the size of the purchased tickets ArrayList */
     public int getAmountOfTicketsPurchased() {return purchasedTickets.size();}
+    public ArrayList<Ticket> getTicketsPurchased() {return purchasedTickets;}
 
     @Override
     public String toCSVString() {
