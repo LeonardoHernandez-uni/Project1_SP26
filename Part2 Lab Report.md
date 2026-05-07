@@ -40,3 +40,19 @@ To test the correctness of the chosen functions, we considered and implemented t
 
 * **Justification of Sufficiency**
 We believe these test cases are enough to test the correctness of the function because they achieve 100% branch coverage for the `buyTicket()` method. By testing the successful execution, the anticipated failure state (insufficient funds), and an edge-case failure state (sold-out ticket), we have mathematically proven that the model protects the user's data integrity under all possible transaction circumstances.
+
+
+### Code Review
+
+**Explain how you conducted a review of your code. Describe how you checked each part of the code review checklist.**
+We conducted a systematic code review using the provided rubric checklist, evaluating the project across Implementation, Logic, Readability/Style, and Performance. We verified that our inheritance structures, data structures, and algorithms met the project specifications.
+
+**Implementation:** The code successfully implements the core TicketMiner requirements, utilizing a clear Object-Oriented design with Abstract classes (`Venue`, `User`, `Event`) and specific concrete classes (`Stadium`, `Concert`, `Customer`). We utilized the Singleton design pattern for our manager classes (`EventManager`, `VenueManager`, `UserManager`) to centralize data access. One area that required dynamic implementation was linking Events to Venues; since the event CSV lacked explicit venue IDs, we implemented a keyword-matching algorithm to dynamically assign locations (e.g., matching "football" to the Sun Bowl). 
+
+**Logic:** During the review, we identified and resolved several critical logic errors regarding capacity and ticket pools. Initially, events were generating hardcoded ticket amounts and stacking them improperly. We refactored the `Event` class logic to dynamically clear and rebuild ticket pools based strictly on the percentage breakdowns (VIP, Gold, Silver, Bronze, GA) dictated by the assigned `Venue`. We also integrated a custom `InsufficientFundsException` to properly handle and reject customer transactions when they cannot afford the ticket, calculating the final price using the required 8.25% tax and 10% member discounts.
+
+**Readability/Style:** The code follows standard industry Java naming conventions (camelCase for variables, PascalCase for classes). We implemented comprehensive Javadoc comments across all methods to ensure maintainability. The package structure effectively separates concerns into `models`, `logic`, `ui`, and `exceptions`. However, similar to previous iterations, the `MenuHandler` remains a heavy, monolithic class that handles the UI for Customers, Organizers, and Admins. If there were to be future iteration, this should be decoupled into specific UI handler classes for each user type. 
+
+**Performance:** Most operations currently run at O(n) time complexity. Our search functions within the Manager classes utilize linear searches through `ArrayList` data structures to find specific IDs or names. Similarly, reserving a ticket requires an O(n) traversal of the event's ticket pool to find an unsold seat matching the requested price tier. While sufficient for the current scale, migrating the primary data structures from `ArrayList` to `HashMap` (using IDs as keys) would optimize search and retrieval operations to O(1) complexity as the dataset grows.
+
+**Rewrites to Make Code Acceptable:** We refactored as much as possible before the due date and with busy schedules.
