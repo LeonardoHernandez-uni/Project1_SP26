@@ -13,8 +13,9 @@ public abstract class Event implements Exportable{
 	private double silverPrice;
 	private double bronzePrice;
 	private double generalAdmissionPrice;
-	private ArrayList<Ticket> ticketPool; 
-	
+	private Venue location;
+	private ArrayList<Ticket> ticketPool = new ArrayList<>(); 
+
 	@Override
     public String toCSVString() {
         return id + "," + eventType + "," + name + "," + date + "," + time + "," + 
@@ -187,4 +188,51 @@ public abstract class Event implements Exportable{
 	public ArrayList<Ticket> getTicketPool() {
 		return ticketPool;
 	}
+<<<<<<< HEAD
+=======
+	/**
+	 * Checks to see if a ticketID is unique and returns false if 
+	 * a ticket in the ticket pool also has that ID
+	 * @param ticketID
+	 * @return
+	 */
+	public boolean ticketIDIsUnique(int ticketID) {
+		for (Ticket t : ticketPool) {
+			if (t.getTicketID() == ticketID) {
+				return false;
+			}
+		}
+		return true;
+	}
+	/** Checks to see if a seatNumber has been taken by checking if the seat exists and 
+	 * checking if said seat has been sold
+	 * 
+	 * @param seatNumber
+	 * @return
+	 */
+	public boolean isSeatTaken(int seatNumber) {
+		for (Ticket t : ticketPool) {
+			if (t.getSeatNumber() == seatNumber && t.checkIfSold()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+	 * @return the venue location
+	 */
+	public Venue getLocation() {
+		return location;
+	}
+	/**
+	 * @param location the venue to set
+	 */
+	public void setLocation(Venue location) { 
+        this.location = location; 
+        // The exact second a Venue is linked, wipe the 100 fake tickets and instantly generate the real capacity!
+        this.ticketPool.clear();
+        createTicketPool(location.getCapacity());
+    }
+
+>>>>>>> fd5858e31664767ef5b150cf57c6d7408a58b694
 }

@@ -171,7 +171,7 @@ public class MenuHandler {
                 }
                 if (user instanceof Organizer organizer) {
                     currentUser = organizer;
-                    System.out.println("Organizer");
+                    organizerMenu(organizer);
                 }
                 if (user instanceof Admin admin) {
                     currentUser = admin;
@@ -714,6 +714,117 @@ public class MenuHandler {
                 default -> System.out.println("Invalid choice.");
             }
         }
+    }
+
+    /**
+     * Prints the Organizer menu, allowing them to generate event reports.
+     * @param organizer The currently logged-in Organizer object.
+     */
+    public static void organizerMenu(Organizer organizer) {
+        boolean logout = false;
+        while (!logout) {
+            System.out.println("\n[Organizer Menu]");
+            System.out.println("1. Generate Event Report");
+            System.out.println("2. Logout");
+            System.out.print(">> ");
+            
+            switch (input.next()) {
+                case "1" -> {
+                    System.out.print("Enter Event ID, Name, or Date to search: ");
+                    
+                    // 1. Bulletproof Scanner: Forces Java to wait until you ACTUALLY type something
+                    String query = "";
+                    while (query.isEmpty()) {
+                        query = input.nextLine().trim();
+                    }
+                    
+                    Event event = EventManager.getInstance().searchEvent(query);
+                    
+                    if (event != null) {
+                        generateEventReport(event);
+                        RunTicketMiner.logAction("Organizer " + organizer.getUserID() + " generated a report for Event " + event.getId());
+                    } else {
+                        // 2. Diagnostic Print: This will tell us EXACTLY why it failed!
+                        System.out.println("Error: Event '" + query + "' not found.");
+                        
+                        int eventCount = EventManager.getInstance().getEventList().size();
+                        System.out.println("--- DEBUG INFO ---");
+                        System.out.println("Total events currently loaded in memory: " + eventCount);
+                        
+                        if (eventCount > 0) {
+                            Event firstEvent = EventManager.getInstance().getEventList().get(0);
+                            System.out.println("Try searching for this exact Event ID: " + firstEvent.getId() + " or Name: " + firstEvent.getName());
+                        } else {
+                            System.out.println("CRITICAL: Your EventManager failed to load the CSV files. The list is empty!");
+                        }
+                        System.out.println("------------------");
+                    }
+                }
+                case "2" -> logout = true;
+                default -> System.out.println("Invalid choice. Please enter 1 or 2.");
+            }
+        }
+    }
+
+    /**
+     * Calculates and prints the financial and capacity statistics for a specific event.
+     * @param event The event to generate the report for.
+     */
+    public static void generateEventReport(Event event) {
+        System.out.println("\n=============================================");
+        System.out.println("          EVENT REPORT: " + event.getName());
+        System.out.println("=============================================");
+        
+        ArrayList<Ticket> tickets = event.getTicketPool();
+        int totalCapacity = (tickets != null) ? tickets.size() : 0;
+        
+        int vipSold = 0, goldSold = 0, silverSold = 0, bronzeSold = 0, gaSold = 0;
+        double totalRevenue = 0.0;
+        double expectedRevenue = 0.0;
+
+        // Loop through every ticket to calculate math and categorize sales
+        if (tickets != null) {
+            for (Ticket t : tickets) {
+                expectedRevenue += t.getPrice(); // Expected assumes EVERY ticket sells
+                
+                if (t.checkIfSold()) {
+                    totalRevenue += t.getPrice();
+                    
+                    // Categorize the sold ticket based on its price
+                    if (t.getPrice() == event.getVipPrice()) vipSold++;
+                    else if (t.getPrice() == event.getGoldPrice()) goldSold++;
+                    else if (t.getPrice() == event.getSilverPrice()) silverSold++;
+                    else if (t.getPrice() == event.getBronzePrice()) bronzeSold++;
+                    else gaSold++;
+                }
+            }
+        }
+        
+        // Subtract the cost of the Venue to get the true Profit
+        double venueCost = 0.0; 
+        if (event.getLocation() != null) {
+             venueCost = event.getLocation().getCost();
+        }
+
+        double actualProfit = totalRevenue - venueCost;
+        double expectedProfit = expectedRevenue - venueCost;
+
+        System.out.println("Total Capacity:       " + totalCapacity);
+        System.out.println("VIP Seats Sold:       " + vipSold);
+        System.out.println("Gold Seats Sold:      " + goldSold);
+        System.out.println("Silver Seats Sold:    " + silverSold);
+        System.out.println("Bronze Seats Sold:    " + bronzeSold);
+        System.out.println("GA Seats Sold:        " + gaSold);
+        System.out.println("---------------------------------------------");
+        System.out.printf("Total Revenue:        $%.2f\n", totalRevenue);
+        System.out.printf("Venue Cost:           $%.2f\n", venueCost);
+        System.out.println("---------------------------------------------");
+        System.out.printf("Expected Profit:      $%.2f\n", expectedProfit);
+        System.out.printf("Actual Profit:        $%.2f\n", actualProfit);
+        System.out.println("=============================================\n");
+        
+        System.out.println("Press Enter to acknowledge and return...");
+        input.nextLine(); // Pauses the menu so they can read it before the loop restarts
     }
 
     /**
